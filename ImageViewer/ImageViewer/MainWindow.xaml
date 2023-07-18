@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-    
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20*"/>
+            <ColumnDefinition Width="80*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="80*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Width="100" Height="20" VerticalAlignment="center" HorizontalAlignment="Center" Content="Select image"></Button>
+            <Button Grid.Row="1" Width="100" Height="20" VerticalAlignment="center" HorizontalAlignment="Center"  Content="Clear"></Button>
+        </Grid>
+        <Image Grid.Column="1" Source="C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\ImageViewer\images\No_Image_Available.jpg"
+               Margin=" 10 10 10 10"/>
+
     </Grid>
 </Window>
