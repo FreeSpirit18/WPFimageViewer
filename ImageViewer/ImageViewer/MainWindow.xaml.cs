@@ -74,7 +74,7 @@ namespace ImageViewer
 
 
                 string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff" };
-                //FolderImages.Add("");
+
                 ImagePaths = allFiles.Where(file => imageExtensions.Contains(Path.GetExtension(file).ToLower())).ToArray();
 
                 FolderImages.Clear();
@@ -89,25 +89,6 @@ namespace ImageViewer
 
         }
 
-        /*private void Select_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = "Image Files|*.png;*.jpg;*.jpeg;*.gif;*.bmp;*.tiff";
-
-            bool? sucsess = fileDialog.ShowDialog();
-            if (sucsess == true)
-            {
-                string path = fileDialog.FileName;
-                display = path;
-            }
-            else
-            {
-                MessageBox.Show("Could not open image.", "error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-
-        }*/
-
-        
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
