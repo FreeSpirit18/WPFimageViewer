@@ -18,22 +18,6 @@ namespace ImageViewer
             MainWindowVM vm = new MainWindowVM();
             DataContext = vm;
         }
-        
-
-        /*
-
-        private void folderImages_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            int imageIndex = folderImages.SelectedIndex;
-            if (imageIndex != -1)
-            {
-                Display = imagePaths[imageIndex];
-            }
-            else
-            {
-                Display = emty;
-            }
-            
-        }*/
+       
     }
 }

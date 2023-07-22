@@ -85,19 +85,5 @@ namespace ImageViewer.MVVM.ViewModel
             DisplayImage = new Image("", emty);
         }
 
-
-        private void folderImages_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            /*int imageIndex = folderImages.SelectedIndex;
-            if (imageIndex != -1)
-            {
-                DisplayImage = Images[imageIndex];
-            }
-            else
-            {
-                DisplayImage = new Image("", emty);
-            }*/
-
-        }
     }
 }
