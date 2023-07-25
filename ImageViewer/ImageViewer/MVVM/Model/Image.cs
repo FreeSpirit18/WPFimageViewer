@@ -1,15 +1,20 @@
-﻿namespace ImageViewer.MVVM.Model
+﻿using System.ComponentModel;
+
+namespace ImageViewer.MVVM.Model
 {
-    internal class Image
+    internal class Image: INotifyPropertyChanged
     {
-        public string name { get; set; }
-        public string path { get; set; }
+        public string Name { get; set; }
+        public string Path { get; set; }
         public Image() { }
+
+
         public Image(string name, string path)
         {
-            this.name = name;
-            this.path = path;
+            this.Name = name;
+            this.Path = path;
         }
 
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }
