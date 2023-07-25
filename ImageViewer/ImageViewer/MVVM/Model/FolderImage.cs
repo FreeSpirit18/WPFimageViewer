@@ -2,14 +2,14 @@
 
 namespace ImageViewer.MVVM.Model
 {
-    internal class Image: INotifyPropertyChanged
+    internal class FolderImage: INotifyPropertyChanged
     {
         public string Name { get; set; }
         public string Path { get; set; }
-        public Image() { }
+        public FolderImage() { }
 
 
-        public Image(string name, string path)
+        public FolderImage(string name, string path)
         {
             this.Name = name;
             this.Path = path;

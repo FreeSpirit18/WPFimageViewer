@@ -7,6 +7,10 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
+using Emgu.CV;
+using Emgu.CV.Structure;
+using System.Windows.Media;
+using System.Drawing;
 
 namespace ImageViewer.MVVM.ViewModel
 {
@@ -14,8 +18,8 @@ namespace ImageViewer.MVVM.ViewModel
     {
         
         public MainWindowVM() {
-            DisplayImage = new Image("", emty);
-            Images = new ObservableCollection<Image>();
+            DisplayImage = new FolderImage("", emty);
+            Images = new ObservableCollection<FolderImage>();
             
 
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
@@ -26,9 +30,23 @@ namespace ImageViewer.MVVM.ViewModel
 
         private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
 
-        private Image displayImage;
+        private double blurValue;
 
-        public Image DisplayImage
+        public double BlurValue
+        {
+            get { return blurValue; }
+            set
+            {
+                blurValue = value;
+                ApplyBlur();
+                OnPropertyChange("BlurValue");
+            }
+        }
+
+
+        private FolderImage displayImage;
+
+        public FolderImage DisplayImage
         {
             get { return displayImage; }
             set
@@ -37,8 +55,21 @@ namespace ImageViewer.MVVM.ViewModel
                 OnPropertyChange("DisplayImage");
             }
         }
-        private ObservableCollection<Image> images;
-        public ObservableCollection<Image> Images
+
+        private Image<Bgr, byte> filterImage;
+
+        public Image<Bgr, byte> FilterImage
+        {
+            get { return filterImage; }
+            set
+            {
+                filterImage = value;
+                OnPropertyChange("FilterImage");
+            }
+        }
+
+        private ObservableCollection<FolderImage> images;
+        public ObservableCollection<FolderImage> Images
         {
             get { return images; }
             set
@@ -68,7 +99,7 @@ namespace ImageViewer.MVVM.ViewModel
                 Images.Clear();
                 for (int i = 0; i < ImagePaths.Length; i++)
                 {
-                    Images.Add(new Image(Path.GetFileName(ImagePaths[i]), ImagePaths[i]));
+                    Images.Add(new FolderImage(Path.GetFileName(ImagePaths[i]), ImagePaths[i]));
                 }
 
             }
@@ -82,8 +113,29 @@ namespace ImageViewer.MVVM.ViewModel
 
         private void Clear_Click()
         {
-            DisplayImage = new Image("", emty);
+            DisplayImage = new FolderImage("", emty);
         }
+
+        private void ApplyBlur()
+        {
+            if (DisplayImage != null)
+            {
+                Image<Bgr, byte> image = new Image<Bgr, byte>(DisplayImage.Path);
+                //using (Image<Bgr, byte> image = new Image<Bgr, byte>(DisplayImage.Path))
+                //{
+                //    double sigma = BlurValue; // Use the slider value as the sigma for the Gaussian blur
+                //    System.Drawing.Size blurSize = new System.Drawing.Size(5, 5); // You can adjust the blur size as needed
+                //    CvInvoke.GaussianBlur(image, image, blurSize, sigma, sigma);
+
+                //    // Convert the Emgu.CV Mat to a System.Drawing.Bitmap
+                //    Bitmap blurredBitmap = image.ToBitmap();
+
+                //    // Update the DisplayImage with the blurred image
+                //    FilterImage = blurredBitmap.ToImage<Bgr, byte>();
+                //}
+            }
+        }
+
 
     }
 }
