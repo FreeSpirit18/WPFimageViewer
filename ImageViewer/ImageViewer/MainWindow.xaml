@@ -36,8 +36,8 @@
             <Image Grid.Column="0" Source="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"
                Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <Image Grid.Column="1" 
-               Margin=" 10 10 10 10" HorizontalAlignment="Center" Source="{Binding FilterImage}" VerticalAlignment="Center"/>
+            <!--<Image Grid.Column="1" 
+               Margin=" 10 10 10 10" HorizontalAlignment="Center" Source="{Binding FilterImage}" VerticalAlignment="Center"/>-->
 
 
             <Grid Grid.Column="2">

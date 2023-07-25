@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[4.7.0.5276, )"
             },
+            "Emgu.CV.runtime.windows": {
+              "target": "Package",
+              "version": "[4.7.0.5276, )"
+            },
             "MaterialDesignThemes": {
               "target": "Package",
               "version": "[4.9.0, )"
