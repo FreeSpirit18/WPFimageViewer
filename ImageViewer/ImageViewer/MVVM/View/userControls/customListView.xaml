@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="ImageViewer.MVVM.View.userControls.customListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ImageViewer.MVVM.View.userControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+
+        <ListView Name="folderImages" ItemsSource="{Binding Images}" SelectedItem="{Binding DisplayImage}" SelectionMode="Single">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical" Margin="5">
+                        <Image Source="{Binding Path}" Height="80" Width="80" Margin="1"/>
+                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" MaxWidth="110" ToolTip="{Binding Name}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>
