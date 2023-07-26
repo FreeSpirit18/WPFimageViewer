@@ -68,9 +68,9 @@
 
                             <Slider Minimum="0" Maximum="300"  Value="{Binding MaxTreshValue, Mode=TwoWay}"/>
 
-                            <!--<ComboBox ItemsSource="{Binding ThresholdType}"
+                            <ComboBox ItemsSource="{Binding ThresholdType}"
                                 >
-                            </ComboBox>-->
+                            </ComboBox>
 
                         </StackPanel>
                     </Expander>

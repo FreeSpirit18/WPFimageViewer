@@ -21,7 +21,15 @@ namespace ImageViewer.MVVM.ViewModel
         public MainWindowVM() {
             DisplayImage = new FolderImage("", emty);
             Images = new ObservableCollection<FolderImage>();
-            thresholdType = new ObservableCollection<string>();
+            thresholdType = new ObservableCollection<string>();//make dictionary <string, int>
+
+            ThresholdType.Add("Binary");
+            ThresholdType.Add("BinaryInv");
+            ThresholdType.Add("Trunc");
+            ThresholdType.Add("ToZero");
+            ThresholdType.Add("ToZeroInv");
+            ThresholdType.Add("Mask");
+            ThresholdType.Add("Otsu");
 
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
