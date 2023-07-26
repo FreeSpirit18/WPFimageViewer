@@ -52,8 +52,8 @@ namespace ImageViewer.MVVM.ViewModel
             set
             {
                 displayImage = value;
-                filterImage = new Image<Bgr, byte>(displayImage.Path);
-                OnPropertyChange("FilterImage");
+                FilterImage = new Image<Bgr, byte>(displayImage.Path);
+                BlurValue = 0;
                 OnPropertyChange("DisplayImage");
             }
         }
@@ -123,17 +123,25 @@ namespace ImageViewer.MVVM.ViewModel
             if (DisplayImage != null)
             {
                 
-                using (Image<Bgr, byte> image = FilterImage)//needs to change!!
+                using (Image<Bgr, byte> image = new Image<Bgr, byte>(DisplayImage.Path))//needs to change!!
                 {
                     double sigma = BlurValue; // Use the slider value as the sigma for the Gaussian blur
-                    System.Drawing.Size blurSize = new System.Drawing.Size(5, 5); // You can adjust the blur size as needed
-                    CvInvoke.GaussianBlur(image, image, blurSize, sigma, sigma);
+                    
+                    System.Drawing.Size blurSize = new System.Drawing.Size(31, 31); // You can adjust the blur size as needed
 
+                    if(sigma > 0)
+                    {
+                        CvInvoke.GaussianBlur(image, image, blurSize, sigma, sigma);
+                    }
+                    
                     // Convert the Emgu.CV Mat to a System.Drawing.Bitmap
                     Bitmap blurredBitmap = image.ToBitmap();
 
                     // Update the DisplayImage with the blurred image
                     FilterImage = blurredBitmap.ToImage<Bgr, byte>();
+                    
+                    
+                    
                 }
             }
         }

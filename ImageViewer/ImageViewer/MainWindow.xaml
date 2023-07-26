@@ -52,8 +52,44 @@
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
 
-                            <Slider Minimum="0" Maximum="10" Value="{Binding BlurValue, Mode=TwoWay}" />
+                            <Slider Minimum="0" Maximum="30" Value="{Binding BlurValue, Mode=TwoWay}" />
                             
+                        </StackPanel>
+                    </Expander>
+                    <Border />
+                    <Expander  HorizontalAlignment="Stretch" Header="Treshold">
+                        <StackPanel
+                            Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+
+                            <Slider Minimum="0" Maximum="30"  />
+
+                        </StackPanel>
+                    </Expander>
+                    <Border />
+                    <Expander  HorizontalAlignment="Stretch" Header="Eroding">
+                        <StackPanel
+                            Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+
+                            <Slider Minimum="0" Maximum="30"  />
+
+                        </StackPanel>
+                    </Expander>
+                    <Border />
+                    <Expander  HorizontalAlignment="Stretch" Header="Edge ">
+                        <StackPanel
+                            Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+
+                            <Slider Minimum="0" Maximum="30"  />
+
                         </StackPanel>
                     </Expander>
                     <Border />
