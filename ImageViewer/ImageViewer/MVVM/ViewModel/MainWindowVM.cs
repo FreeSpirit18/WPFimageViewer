@@ -11,6 +11,7 @@ using Emgu.CV;
 using Emgu.CV.Structure;
 using System.Windows.Media;
 using System.Drawing;
+using Emgu.CV.CvEnum;
 
 namespace ImageViewer.MVVM.ViewModel
 {
@@ -20,7 +21,7 @@ namespace ImageViewer.MVVM.ViewModel
         public MainWindowVM() {
             DisplayImage = new FolderImage("", emty);
             Images = new ObservableCollection<FolderImage>();
-            
+            thresholdType = new ObservableCollection<string>();
 
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
@@ -40,6 +41,30 @@ namespace ImageViewer.MVVM.ViewModel
                 blurValue = value;
                 ApplyBlur();
                 OnPropertyChange("BlurValue");
+            }
+        }
+
+        private double treshValue;
+        public double TreshValue
+        {
+            get { return treshValue; }
+            set
+            {
+                treshValue = value;
+                ApplyBlur();
+                OnPropertyChange("TreshValue");
+            }
+        }
+
+        private double maxTreshValue;
+        public double MaxTreshValue
+        {
+            get { return maxTreshValue; }
+            set
+            {
+                maxTreshValue = value;
+                ApplyBlur();
+                OnPropertyChange("MaxTreshValue");
             }
         }
 
@@ -78,6 +103,17 @@ namespace ImageViewer.MVVM.ViewModel
             {
                 images = value;
                 OnPropertyChange("Images");
+            }
+        }
+
+        private ObservableCollection<string> thresholdType;
+        public ObservableCollection<string> ThresholdType
+        {
+            get { return thresholdType; }
+            set
+            {
+                thresholdType = value;
+                OnPropertyChange("ThresholdType");
             }
         }
 
@@ -133,7 +169,13 @@ namespace ImageViewer.MVVM.ViewModel
                     {
                         CvInvoke.GaussianBlur(image, image, blurSize, sigma, sigma);
                     }
-                    
+
+                    if (TreshValue > 0)
+                    {
+                        CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, 0);
+                    }
+
+
                     // Convert the Emgu.CV Mat to a System.Drawing.Bitmap
                     Bitmap blurredBitmap = image.ToBitmap();
 

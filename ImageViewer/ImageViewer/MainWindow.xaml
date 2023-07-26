@@ -64,7 +64,13 @@
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
 
-                            <Slider Minimum="0" Maximum="30"  />
+                            <Slider Minimum="0" Maximum="300"  Value="{Binding TreshValue, Mode=TwoWay}"/>
+
+                            <Slider Minimum="0" Maximum="300"  Value="{Binding MaxTreshValue, Mode=TwoWay}"/>
+
+                            <!--<ComboBox ItemsSource="{Binding ThresholdType}"
+                                >
+                            </ComboBox>-->
 
                         </StackPanel>
                     </Expander>
