@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageViewer"
         xmlns:userControls="clr-namespace:ImageViewer.MVVM.View.userControls"
+        
+        xmlns:emguConverter="clr-namespace:ImageViewer.MVVM"
+        
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -36,8 +39,8 @@
             <Image Grid.Column="0" Source="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"
                Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <!--<Image Grid.Column="1" 
-               Margin=" 10 10 10 10" HorizontalAlignment="Center" Source="{Binding FilterImage}" VerticalAlignment="Center"/>-->
+            <Image Grid.Column="1" 
+               Margin=" 10 10 10 10" HorizontalAlignment="Center" Source="{Binding FilterImage, Converter={emguConverter:Converter}}" VerticalAlignment="Center"/>
 
 
             <Grid Grid.Column="2">

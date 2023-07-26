@@ -52,6 +52,8 @@ namespace ImageViewer.MVVM.ViewModel
             set
             {
                 displayImage = value;
+                filterImage = new Image<Bgr, byte>(displayImage.Path);
+                OnPropertyChange("FilterImage");
                 OnPropertyChange("DisplayImage");
             }
         }
@@ -120,8 +122,8 @@ namespace ImageViewer.MVVM.ViewModel
         {
             if (DisplayImage != null)
             {
-
-                using (Image<Bgr, byte> image = new Image<Bgr, byte>(DisplayImage.Path))
+                
+                using (Image<Bgr, byte> image = FilterImage)//needs to change!!
                 {
                     double sigma = BlurValue; // Use the slider value as the sigma for the Gaussian blur
                     System.Drawing.Size blurSize = new System.Drawing.Size(5, 5); // You can adjust the blur size as needed
