@@ -263,45 +263,54 @@ namespace ImageViewer.MVVM.ViewModel
         {
             if (DisplayImage != null)
             {
-                
-                using (Image<Gray, byte> image = new Image<Gray, byte>(DisplayImage.Path))//needs to change!!
-                {
 
-                    if(BlurValue > 0)
+                using (Image<Gray, byte> grayImage = ImageColor ? null : new Image<Gray, byte>(DisplayImage.Path))
+                using (Image<Bgr, byte> bgrImage = ImageColor ? new Image<Bgr, byte>(DisplayImage.Path) : null)
+                {
+                    //var image = ImageColor == true ? bgrImage : GrayImage;
+
+                    if (BlurValue > 0)
                     {
                         System.Drawing.Size blurSize = new System.Drawing.Size(31, 31); // You can adjust the blur size as needed
-                        CvInvoke.GaussianBlur(image, image, blurSize, BlurValue, BlurValue);
+                        CvInvoke.GaussianBlur((ImageColor == true ? bgrImage:grayImage), (ImageColor == true ? bgrImage : grayImage), blurSize, BlurValue, BlurValue);
                     }
 
                     if (TreshValue > 0)
                     {
-                        CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, 0);
+                        CvInvoke.Threshold((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), TreshValue, MaxTreshValue, 0);
                     }
                     if (ErodeIterations > 1)
                     {
                         var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Erode(image, image, erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+                        CvInvoke.Erode((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
                     if (DilateIterations > 1)
                     {
                         var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Dilate(image, image, dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+                        CvInvoke.Dilate((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
-                    if (EdgeTresh1 > 0 || EdgeTresh2 > 0)
+                    if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && !ImageColor)
                     {
-                        Image<Gray, byte> grayImage = image.Convert<Gray, byte>();
+                        Image<Gray, byte> Temp = grayImage;
                         //Image<Gray, byte> edgesImage = new Image<Gray, byte>(filterImage.Width, filterImage.Height);
 
-
-                        CvInvoke.Canny(grayImage, image, 50, 100);
+                        CvInvoke.Canny(Temp, grayImage, 50, 100);
 
                     }
 
-                    Bitmap blurredBitmap = image.ToBitmap();
+                    //Bitmap blurredBitmap = image.ToBitmap();
 
-                    //FilterImage = blurredBitmap.ToImage<Gray, byte>();
+                    if (ImageColor)
+                    {
+                        BgrImage = bgrImage;
+                    }
+                    else
+                    {
+                        GrayImage = grayImage;
+                    }
+
                 }
             }
         }
