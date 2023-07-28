@@ -39,8 +39,23 @@
             <Image Grid.Column="0" Source="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"
                Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <Image Grid.Column="1" 
-               Margin=" 10 10 10 10" HorizontalAlignment="Center" Source="{Binding FilterImage, Converter={emguConverter:Converter}}" VerticalAlignment="Center"/>
+            <!--<Image Grid.Column="1" 
+               Margin=" 10 10 10 10" HorizontalAlignment="Center" Source="{Binding FilterImage, Converter={emguConverter:Converter}}" VerticalAlignment="Center"/>-->
+
+            <Image Grid.Column="1" Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ImageColor}" Value="True">
+                                <Setter Property="Source" Value="{Binding BgrImage, Converter={emguConverter:Converter}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ImageColor}" Value="False">
+                                <Setter Property="Source" Value="{Binding GrayImage, Converter={emguConverter:Converter}}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
 
 
             <Grid Grid.Column="2">
@@ -63,8 +78,8 @@
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
-
                             <Slider Minimum="0" Maximum="255"  Value="{Binding TreshValue, Mode=TwoWay}"/>
+
 
                             <Slider Minimum="0" Maximum="255"  Value="{Binding MaxTreshValue, Mode=TwoWay}"/>
 
@@ -97,7 +112,7 @@
                             Margin="24,8,24,16"
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-
+                            <Button Content="Toggle Image Color" Command="{Binding ToggleColor}"/>
 
                             <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh1, Mode=TwoWay}"/>
 

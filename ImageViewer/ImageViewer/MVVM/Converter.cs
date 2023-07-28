@@ -18,11 +18,23 @@ namespace ImageViewer.MVVM
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is Image<Bgr, byte> emguImage)
+            if (value is Image<Gray, byte> emguGrayImage)
             {
                 using (var ms = new MemoryStream())
                 {
-                    emguImage.ToBitmap().Save(ms, ImageFormat.Bmp);
+                    emguGrayImage.ToBitmap().Save(ms, ImageFormat.Bmp);
+                    var bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = new MemoryStream(ms.ToArray());
+                    bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmapImage.EndInit();
+                    return bitmapImage;
+                }
+            }else if (value is Image<Bgr, byte> emguBgrImage)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    emguBgrImage.ToBitmap().Save(ms, ImageFormat.Bmp);
                     var bitmapImage = new BitmapImage();
                     bitmapImage.BeginInit();
                     bitmapImage.StreamSource = new MemoryStream(ms.ToArray());

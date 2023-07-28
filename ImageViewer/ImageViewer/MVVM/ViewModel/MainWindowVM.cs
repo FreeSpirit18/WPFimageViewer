@@ -12,6 +12,7 @@ using Emgu.CV.Structure;
 using System.Windows.Media;
 using System.Drawing;
 using Emgu.CV.CvEnum;
+using System;
 
 namespace ImageViewer.MVVM.ViewModel
 {
@@ -22,6 +23,8 @@ namespace ImageViewer.MVVM.ViewModel
             DisplayImage = new FolderImage("", emty);
             Images = new ObservableCollection<FolderImage>();
             thresholdType = new ObservableCollection<string>();//make dictionary <string, int>
+            //treshSettings = new TreshFilterSettings(0,0, true);
+            ImageColor = true;
 
             ThresholdType.Add("Binary");
             ThresholdType.Add("BinaryInv");
@@ -33,9 +36,11 @@ namespace ImageViewer.MVVM.ViewModel
 
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
+            ToggleColor = new RelayCommand(execute => Toggle_Color(), canExecute => { return true; });
         }
         public RelayCommand SelectCommand { get; private set; }
         public RelayCommand ClearCommand { get; private set; }
+        public RelayCommand ToggleColor { get; private set; }
 
         private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
 
@@ -53,6 +58,19 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
         //----------Tresholdin--------------------------------
+        private TreshFilterSettings treshSettings;
+
+        public TreshFilterSettings TreshSettings
+        {
+            get { return treshSettings; }
+            set
+            {
+                treshSettings = value;
+                ApplyFilter();
+                OnPropertyChange("TreshSettings");
+            }
+        }
+
         private double treshValue;
         public double TreshValue
         {
@@ -74,6 +92,17 @@ namespace ImageViewer.MVVM.ViewModel
                 maxTreshValue = value;
                 ApplyFilter();
                 OnPropertyChange("MaxTreshValue");
+            }
+        }
+
+        private ObservableCollection<string> thresholdType;
+        public ObservableCollection<string> ThresholdType
+        {
+            get { return thresholdType; }
+            set
+            {
+                thresholdType = value;
+                OnPropertyChange("ThresholdType");
             }
         }
         //-----------erode and dialate -----------------
@@ -124,33 +153,58 @@ namespace ImageViewer.MVVM.ViewModel
                 OnPropertyChange("EdgeTresh2");
             }
         }
-
+        //--------------------------------------------------
         private FolderImage displayImage;
-
         public FolderImage DisplayImage
         {
             get { return displayImage; }
             set
             {
                 displayImage = value;
-                FilterImage = new Image<Bgr, byte>(displayImage.Path);
+                
+                BgrImage = new Image<Bgr, byte>(displayImage.Path);
+                GrayImage = new Image<Gray, byte>(displayImage.Path);
+                
                 BlurValue = 0;
                 OnPropertyChange("DisplayImage");
             }
         }
 
-        private Image<Bgr, byte> filterImage;
-
-        public Image<Bgr, byte> FilterImage
+        //---------------------------------------------------
+        private Image<Gray, byte> grayImage;
+        public Image<Gray, byte> GrayImage
         {
-            get { return filterImage; }
+            get { return grayImage; }
             set
             {
-                filterImage = value;
-                OnPropertyChange("FilterImage");
+                grayImage = value;
+                OnPropertyChange("GrayImage");
             }
         }
 
+        private Image<Bgr, byte> bgrImage;
+        public Image<Bgr, byte> BgrImage
+        {
+            get { return bgrImage; }
+            set
+            {
+                bgrImage = value;
+                OnPropertyChange("BgrImage");
+            }
+        }
+
+
+        private bool imageColor;
+        public bool ImageColor
+        {
+            get { return imageColor; }
+            set
+            {
+                imageColor = value;
+                OnPropertyChange("ImageColor");
+            }
+        }
+        //---------------------------------------------------
         private ObservableCollection<FolderImage> images;
         public ObservableCollection<FolderImage> Images
         {
@@ -161,18 +215,9 @@ namespace ImageViewer.MVVM.ViewModel
                 OnPropertyChange("Images");
             }
         }
-
-        private ObservableCollection<string> thresholdType;
-        public ObservableCollection<string> ThresholdType
-        {
-            get { return thresholdType; }
-            set
-            {
-                thresholdType = value;
-                OnPropertyChange("ThresholdType");
-            }
-        }
-
+        //-----------------------------------------------------
+        
+        //--------------------------------------------------
         private void Select_Click()
         {
             WinForms.FolderBrowserDialog dialog = new WinForms.FolderBrowserDialog();
@@ -204,6 +249,10 @@ namespace ImageViewer.MVVM.ViewModel
 
         }
 
+        private void Toggle_Color() { 
+            // Toggle the ImageColor property between true and false
+            ImageColor = !ImageColor;
+        }
 
         private void Clear_Click()
         {
@@ -215,7 +264,7 @@ namespace ImageViewer.MVVM.ViewModel
             if (DisplayImage != null)
             {
                 
-                using (Image<Bgr, byte> image = new Image<Bgr, byte>(DisplayImage.Path))//needs to change!!
+                using (Image<Gray, byte> image = new Image<Gray, byte>(DisplayImage.Path))//needs to change!!
                 {
 
                     if(BlurValue > 0)
@@ -239,22 +288,20 @@ namespace ImageViewer.MVVM.ViewModel
                         var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
                         CvInvoke.Dilate(image, image, dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
+
                     if (EdgeTresh1 > 0 || EdgeTresh2 > 0)
                     {
                         Image<Gray, byte> grayImage = image.Convert<Gray, byte>();
+                        //Image<Gray, byte> edgesImage = new Image<Gray, byte>(filterImage.Width, filterImage.Height);
 
-                        CvInvoke.Canny(grayImage, image, EdgeTresh1, EdgeTresh2);
+
+                        CvInvoke.Canny(grayImage, image, 50, 100);
 
                     }
 
-                    // Convert the Emgu.CV Mat to a System.Drawing.Bitmap
                     Bitmap blurredBitmap = image.ToBitmap();
 
-                    // Update the DisplayImage with the blurred image
-                    FilterImage = blurredBitmap.ToImage<Bgr, byte>();
-                    
-                    
-                    
+                    //FilterImage = blurredBitmap.ToImage<Gray, byte>();
                 }
             }
         }
