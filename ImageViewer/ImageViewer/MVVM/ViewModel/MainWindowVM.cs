@@ -37,10 +37,12 @@ namespace ImageViewer.MVVM.ViewModel
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
             ToggleColor = new RelayCommand(execute => Toggle_Color(), canExecute => { return true; });
+            SaveCommand = new RelayCommand(execute => SaveImage(), canExecute => { return true; });
         }
         public RelayCommand SelectCommand { get; private set; }
         public RelayCommand ClearCommand { get; private set; }
         public RelayCommand ToggleColor { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
 
         private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
 
@@ -259,6 +261,34 @@ namespace ImageViewer.MVVM.ViewModel
             DisplayImage = new FolderImage("", emty);
         }
 
+        // ... Your other code ...
+
+        public void SaveImage()
+        {
+            // Show the SaveFileDialog to get the file path and name
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                if (ImageColor)
+                {
+                    using (var bitmap = BgrImage.ToBitmap())
+                    {
+                        bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    }
+                }
+                else
+                {
+                    using (var bitmap = GrayImage.ToBitmap())
+                    {
+                        bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                    }
+                }
+            }
+        }
+
         private void ApplyFilter()
         {
             if (DisplayImage != null)
@@ -294,9 +324,8 @@ namespace ImageViewer.MVVM.ViewModel
                     if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && !ImageColor)
                     {
                         Image<Gray, byte> Temp = grayImage;
-                        //Image<Gray, byte> edgesImage = new Image<Gray, byte>(filterImage.Width, filterImage.Height);
 
-                        CvInvoke.Canny(Temp, grayImage, 50, 100);
+                        CvInvoke.Canny(Temp, grayImage, EdgeTresh1, EdgeTresh2);
 
                     }
 

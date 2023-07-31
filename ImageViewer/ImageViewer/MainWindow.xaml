@@ -60,27 +60,44 @@
 
             <Grid Grid.Column="2">
                 <StackPanel>
-                    <Expander  HorizontalAlignment="Stretch" Header="Blur">
+                    <Expander  HorizontalAlignment="Stretch" >
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Blur" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
                         <StackPanel
                             Margin="24,8,24,16"
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
+                            
 
+                            <Label Content="Blur value:"/>
                             <Slider Minimum="0" Maximum="30" Value="{Binding BlurValue, Mode=TwoWay}" />
                             
                         </StackPanel>
                     </Expander>
                     <Border />
-                    <Expander  HorizontalAlignment="Stretch" Header="Treshold">
+                    <Expander  HorizontalAlignment="Stretch">
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Treshold" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
                         <StackPanel
                             Margin="24,8,24,16"
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
+                            <Label Content="Treshold value:"/>
                             <Slider Minimum="0" Maximum="255"  Value="{Binding TreshValue, Mode=TwoWay}"/>
 
-
+                            <Label Content="Max treshold value:"/>
                             <Slider Minimum="0" Maximum="255"  Value="{Binding MaxTreshValue, Mode=TwoWay}"/>
 
                             <ComboBox ItemsSource="{Binding ThresholdType}"
@@ -90,39 +107,55 @@
                         </StackPanel>
                     </Expander>
                     <Border />
-                    <Expander  HorizontalAlignment="Stretch" Header="Eroding">
+                    <Expander  HorizontalAlignment="Stretch" >
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Eroding" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
                         <StackPanel
                             Margin="24,8,24,16"
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
-
-                            <TextBlock Text="Erode Iterations:"/>
-                            <Slider Value="{Binding ErodeIterations, Mode=TwoWay}" Minimum="1" Maximum="10" TickFrequency="1" TickPlacement="BottomRight"/>
+                            <Label Content="Erode Iterations:"/>
+                            <Slider Maximum="10" Minimum="0" Style="{StaticResource MaterialDesignDiscreteSlider}"
+                                TickFrequency="1" TickPlacement="Both" Value="{Binding ErodeIterations, Mode=TwoWay}"/>
 
                             <TextBlock Text="Dilate Iterations:"/>
-                            <Slider Value="{Binding DilateIterations, Mode=TwoWay}" Minimum="1" Maximum="10" TickFrequency="1" TickPlacement="BottomRight"/>
-                            
+                            <Slider Maximum="10" Minimum="0" Style="{StaticResource MaterialDesignDiscreteSlider}"
+                                TickFrequency="1" TickPlacement="Both" Value="{Binding DilateIterations, Mode=TwoWay}"/>
 
                         </StackPanel>
                     </Expander>
                     <Border />
-                    <Expander  HorizontalAlignment="Stretch" Header="Edge ">
+                    <Expander  HorizontalAlignment="Stretch" >
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Edge" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
                         <StackPanel
                             Margin="24,8,24,16"
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
                             <Button Content="Toggle Image Color" Command="{Binding ToggleColor}"/>
 
+                            <Label Content="Edge treshold 1:"/>
                             <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh1, Mode=TwoWay}"/>
 
+                            <Label Content="Edge treshold 2:"/>
                             <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh2, Mode=TwoWay}"/>
 
                         </StackPanel>
                     </Expander>
                     <Border />
                 </StackPanel>
-
+                <Button VerticalAlignment="Bottom" Content="Save image" Margin="15 10 15 10" Command="{Binding SaveCommand}"/>
             </Grid>
             
 
