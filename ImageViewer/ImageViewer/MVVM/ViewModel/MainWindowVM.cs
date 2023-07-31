@@ -274,16 +274,21 @@ namespace ImageViewer.MVVM.ViewModel
 
                 if (ImageColor)
                 {
-                    using (var bitmap = BgrImage.ToBitmap())
+
+                    var bgrImageToSave = BgrImage.ToBitmap();
+
+                    using (bgrImageToSave)
                     {
-                        bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        bgrImageToSave.Save(filePath, System.Drawing.Imaging.ImageFormat.Jpeg);
                     }
                 }
                 else
                 {
-                    using (var bitmap = GrayImage.ToBitmap())
+                    var grayImageToSave = GrayImage.ToBitmap();
+
+                    using (grayImageToSave)
                     {
-                        bitmap.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                        grayImageToSave.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
                     }
                 }
             }
@@ -333,11 +338,13 @@ namespace ImageViewer.MVVM.ViewModel
 
                     if (ImageColor)
                     {
-                        BgrImage = bgrImage;
+                        Bitmap blurredBitmap = bgrImage.ToBitmap();
+                        BgrImage = blurredBitmap.ToImage<Bgr, byte>();
                     }
                     else
                     {
-                        GrayImage = grayImage;
+                        Bitmap blurredBitmap = grayImage.ToBitmap();
+                        GrayImage = blurredBitmap.ToImage<Gray, byte>();
                     }
 
                 }
