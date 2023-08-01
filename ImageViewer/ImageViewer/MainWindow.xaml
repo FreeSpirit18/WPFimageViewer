@@ -18,7 +18,13 @@
          Background="#FFFAF3"
          FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="450" Width="800">
-    
+    <Window.Resources>
+        <!-- Boolean to Visibility Converter -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!-- Custom Inverse Boolean Converter -->
+        <!--<local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>-->
+    </Window.Resources>
     <Grid >
         
         <Grid.RowDefinitions>
@@ -43,11 +49,13 @@
                 <Image.Style>
                     <Style TargetType="Image">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding ImageColor}" Value="True">
-                                <Setter Property="Source" Value="{Binding BgrImage, Converter={emguConverter:Converter}}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ImageColor}" Value="False">
+                            <DataTrigger Binding="{Binding Grayscale}" Value="True">
                                 <Setter Property="Source" Value="{Binding GrayImage, Converter={emguConverter:Converter}}"/>
+                                
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Grayscale}" Value="False">
+                                <Setter Property="Source" Value="{Binding BgrImage, Converter={emguConverter:Converter}}"/>
+                                
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -136,7 +144,7 @@
                         </StackPanel>
                     </Expander>
                     <Border />
-                    <Expander  HorizontalAlignment="Stretch" >
+                    <Expander  HorizontalAlignment="Stretch" Visibility="{Binding Grayscale, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Edge" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
@@ -160,8 +168,17 @@
                     </Expander>
                     <Border />
                 </StackPanel>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center"
+                            Margin="24,8,24,16"
+                            Orientation="Horizontal"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
-                <Button Grid.Row="1" VerticalAlignment="Bottom"  Content="Toggle Image Color" Margin="15 5 15 5" Command="{Binding ToggleColor}"/>
+                    <Label FontSize="15" Content="Grayscale:"/>
+                    <ToggleButton  IsChecked="{Binding Grayscale, Mode=TwoWay}"/>
+                
+
+                </StackPanel>
+                
                 <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>
 
             </Grid>

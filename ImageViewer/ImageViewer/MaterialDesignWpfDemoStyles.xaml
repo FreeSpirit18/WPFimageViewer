@@ -16,4 +16,5 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Height" Value="1"/>
     </Style>
+    
 </ResourceDictionary>

@@ -24,7 +24,7 @@ namespace ImageViewer.MVVM.ViewModel
             Images = new ObservableCollection<FolderImage>();
             thresholdType = new ObservableCollection<string>();//make dictionary <string, int>
             //treshSettings = new TreshFilterSettings(0,0, true);
-            ImageColor = true;
+            Grayscale = false;
 
             BlurActive = true;
             TreshActive = true;
@@ -43,12 +43,10 @@ namespace ImageViewer.MVVM.ViewModel
 
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
-            ToggleColor = new RelayCommand(execute => Toggle_Color(), canExecute => { return true; });
             SaveCommand = new RelayCommand(execute => SaveImage(), canExecute => { return true; });
         }
         public RelayCommand SelectCommand { get; private set; }
         public RelayCommand ClearCommand { get; private set; }
-        public RelayCommand ToggleColor { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
 
         private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
@@ -248,14 +246,14 @@ namespace ImageViewer.MVVM.ViewModel
         }
 
 
-        private bool imageColor;
-        public bool ImageColor
+        private bool grayscale;
+        public bool Grayscale
         {
-            get { return imageColor; }
+            get { return grayscale; }
             set
             {
-                imageColor = value;
-                OnPropertyChange("ImageColor");
+                grayscale = value;
+                OnPropertyChange("Grayscale");
             }
         }
         //---------------------------------------------------
@@ -310,12 +308,6 @@ namespace ImageViewer.MVVM.ViewModel
 
         }
 
-        private void Toggle_Color() { 
-            // Toggle the ImageColor property between true and false
-            ImageColor = !ImageColor;
-            ApplyFilter();
-        }
-
         private void Clear_Click()
         {
             DisplayImage = new FolderImage("", emty);
@@ -333,23 +325,23 @@ namespace ImageViewer.MVVM.ViewModel
             {
                 string filePath = saveFileDialog.FileName;
 
-                if (ImageColor)
-                {
-
-                    var bgrImageToSave = BgrImage.ToBitmap();
-
-                    using (bgrImageToSave)
-                    {
-                        bgrImageToSave.Save(filePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    }
-                }
-                else
+                if (Grayscale)
                 {
                     var grayImageToSave = GrayImage.ToBitmap();
 
                     using (grayImageToSave)
                     {
                         grayImageToSave.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
+                    }
+                    
+                }
+                else
+                {
+                    var bgrImageToSave = BgrImage.ToBitmap();
+
+                    using (bgrImageToSave)
+                    {
+                        bgrImageToSave.Save(filePath, System.Drawing.Imaging.ImageFormat.Jpeg);
                     }
                 }
                 Select_Images();
@@ -361,33 +353,33 @@ namespace ImageViewer.MVVM.ViewModel
             if (DisplayImage != null)
             {
 
-                using (Image<Gray, byte> grayImage = ImageColor ? null : new Image<Gray, byte>(DisplayImage.Path))
-                using (Image<Bgr, byte> bgrImage = ImageColor ? new Image<Bgr, byte>(DisplayImage.Path) : null)
+                using (Image<Bgr, byte> bgrImage = Grayscale ? null : new Image<Bgr, byte>(DisplayImage.Path))
+                using (Image<Gray, byte>  grayImage= Grayscale ? new Image<Gray, byte>(DisplayImage.Path) : null)
                 {
 
                     if (BlurValue > 0 && BlurActive)
                     {
                         System.Drawing.Size blurSize = new System.Drawing.Size(31, 31); // You can adjust the blur size as needed
-                        CvInvoke.GaussianBlur((ImageColor == true ? bgrImage:grayImage), (ImageColor == true ? bgrImage : grayImage), blurSize, BlurValue, BlurValue);
+                        CvInvoke.GaussianBlur((Grayscale ?  grayImage: bgrImage), (Grayscale ? grayImage : bgrImage), blurSize, BlurValue, BlurValue);
                     }
 
                     if (TreshValue > 0 && TreshActive)
                     {
-                        CvInvoke.Threshold((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), TreshValue, MaxTreshValue, 0);
+                        CvInvoke.Threshold((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), TreshValue, MaxTreshValue, 0);
                     }
                     if (ErodeIterations > 1 && ErodeDilateActive)
                     {
                         var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Erode((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+                        CvInvoke.Erode((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
                     if (DilateIterations > 1 && ErodeDilateActive)
                     {
                         var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Dilate((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+                        CvInvoke.Dilate((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
-                    if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && !ImageColor && EdgeActive)
+                    if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && Grayscale && EdgeActive)
                     {
                         Image<Gray, byte> Temp = grayImage;
 
@@ -397,15 +389,15 @@ namespace ImageViewer.MVVM.ViewModel
 
                     //Bitmap blurredBitmap = image.ToBitmap();
 
-                    if (ImageColor)
-                    {
-                        Bitmap blurredBitmap = bgrImage.ToBitmap();
-                        BgrImage = blurredBitmap.ToImage<Bgr, byte>();
-                    }
-                    else
+                    if (Grayscale)
                     {
                         Bitmap blurredBitmap = grayImage.ToBitmap();
                         GrayImage = blurredBitmap.ToImage<Gray, byte>();
+                    }
+                    else
+                    {
+                        Bitmap blurredBitmap = bgrImage.ToBitmap();
+                        BgrImage = blurredBitmap.ToImage<Bgr, byte>();
                     }
 
                 }
