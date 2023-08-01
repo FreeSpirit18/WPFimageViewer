@@ -53,6 +53,8 @@ namespace ImageViewer.MVVM.ViewModel
 
         private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
 
+        private string folder { get; set; }
+
         //---------Blur--------------------------
         private bool blurActive;
         public bool BlurActive
@@ -216,11 +218,20 @@ namespace ImageViewer.MVVM.ViewModel
             set
             {
                 displayImage = value;
-                
-                BgrImage = new Image<Bgr, byte>(value.Path);
-                GrayImage = new Image<Gray, byte>(value.Path);
-                
+                if (displayImage != null)
+                {
+                    BgrImage = new Image<Bgr, byte>(value.Path);
+                    GrayImage = new Image<Gray, byte>(value.Path);
+                }
+                EdgeTresh1 = 0;
+                EdgeTresh2 = 0;
                 BlurValue = 0;
+                TreshValue = 0;
+                MaxTreshValue = 0;
+                ErodeIterations = 0;
+                DilateIterations = 0;
+
+
                 OnPropertyChange("DisplayImage");
             }
         }
@@ -281,21 +292,9 @@ namespace ImageViewer.MVVM.ViewModel
 
             if (result == WinForms.DialogResult.OK)
             {
-                string folder = dialog.SelectedPath;
+                folder = dialog.SelectedPath;
 
-                string[] allFiles = Directory.GetFiles(folder);
-
-
-                string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff" };
-
-                string[] ImagePaths = allFiles.Where(file => imageExtensions.Contains(Path.GetExtension(file).ToLower())).ToArray();
-
-                Images.Clear();
-                for (int i = 0; i < ImagePaths.Length; i++)
-                {
-                    Images.Add(new FolderImage(Path.GetFileName(ImagePaths[i]), ImagePaths[i]));
-                }
-
+                Select_Images();
             }
             else
             {
@@ -304,9 +303,29 @@ namespace ImageViewer.MVVM.ViewModel
 
         }
 
+        private void Select_Images()
+        {
+            string[] allFiles = Directory.GetFiles(folder);
+
+
+            string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff" };
+
+            string[] ImagePaths = allFiles.Where(file => imageExtensions.Contains(Path.GetExtension(file).ToLower())).ToArray();
+
+            Images.Clear();
+            for (int i = 0; i < ImagePaths.Length; i++)
+            {
+                Images.Add(new FolderImage(Path.GetFileName(ImagePaths[i]), ImagePaths[i]));
+
+            }
+            DisplayImage = new FolderImage("", emty);
+
+        }
+
         private void Toggle_Color() { 
             // Toggle the ImageColor property between true and false
             ImageColor = !ImageColor;
+            ApplyFilter();
         }
 
         private void Clear_Click()
@@ -345,6 +364,7 @@ namespace ImageViewer.MVVM.ViewModel
                         grayImageToSave.Save(filePath, System.Drawing.Imaging.ImageFormat.Png);
                     }
                 }
+                Select_Images();
             }
         }
 
