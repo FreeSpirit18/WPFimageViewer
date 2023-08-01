@@ -92,18 +92,6 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
-        /*private TreshFilterSettings treshSettings;
-        public TreshFilterSettings TreshSettings
-        {
-            get { return treshSettings; }
-            set
-            {
-                treshSettings = value;
-                ApplyFilter();
-                OnPropertyChange("TreshSettings");
-            }
-        }*/
-
         private double treshValue;
         public double TreshValue
         {
