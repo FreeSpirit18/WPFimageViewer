@@ -26,6 +26,12 @@ namespace ImageViewer.MVVM.ViewModel
             //treshSettings = new TreshFilterSettings(0,0, true);
             ImageColor = true;
 
+            BlurActive = true;
+            TreshActive = true;
+            ErodeDilateActive = true;
+            EdgeActive = true;
+
+            /*
             ThresholdType.Add("Binary");
             ThresholdType.Add("BinaryInv");
             ThresholdType.Add("Trunc");
@@ -33,6 +39,7 @@ namespace ImageViewer.MVVM.ViewModel
             ThresholdType.Add("ToZeroInv");
             ThresholdType.Add("Mask");
             ThresholdType.Add("Otsu");
+            */
 
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
@@ -47,8 +54,19 @@ namespace ImageViewer.MVVM.ViewModel
         private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
 
         //---------Blur--------------------------
-        private double blurValue;
+        private bool blurActive;
+        public bool BlurActive
+        {
+            get { return blurActive; }
+            set
+            {
+                blurActive = value;
+                ApplyFilter();
+                OnPropertyChange("BlurActive");
+            }
+        }
 
+        private double blurValue;
         public double BlurValue
         {
             get { return blurValue; }
@@ -60,8 +78,19 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
         //----------Tresholdin--------------------------------
-        private TreshFilterSettings treshSettings;
+        private bool treshActive;
+        public bool TreshActive
+        {
+            get { return treshActive; }
+            set
+            {
+                treshActive = value;
+                ApplyFilter();
+                OnPropertyChange("TreshActive");
+            }
+        }
 
+        /*private TreshFilterSettings treshSettings;
         public TreshFilterSettings TreshSettings
         {
             get { return treshSettings; }
@@ -71,7 +100,7 @@ namespace ImageViewer.MVVM.ViewModel
                 ApplyFilter();
                 OnPropertyChange("TreshSettings");
             }
-        }
+        }*/
 
         private double treshValue;
         public double TreshValue
@@ -108,6 +137,18 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
         //-----------erode and dialate -----------------
+        private bool erodeDilateActive;
+        public bool ErodeDilateActive
+        {
+            get { return erodeDilateActive; }
+            set
+            {
+                erodeDilateActive = value;
+                ApplyFilter();
+                OnPropertyChange("ErodeDilateActive");
+            }
+        }
+        
         private int erodeIterations;
         public int ErodeIterations
         {
@@ -132,6 +173,18 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
         //-----------Edge-------------------------------
+        private bool edgeActive;
+        public bool EdgeActive
+        {
+            get { return edgeActive; }
+            set
+            {
+                edgeActive = value;
+                ApplyFilter();
+                OnPropertyChange("EdgeActive");
+            }
+        }
+        
         private double edgeTresh1;
         public double EdgeTresh1
         {
@@ -164,8 +217,8 @@ namespace ImageViewer.MVVM.ViewModel
             {
                 displayImage = value;
                 
-                BgrImage = new Image<Bgr, byte>(displayImage.Path);
-                GrayImage = new Image<Gray, byte>(displayImage.Path);
+                BgrImage = new Image<Bgr, byte>(value.Path);
+                GrayImage = new Image<Gray, byte>(value.Path);
                 
                 BlurValue = 0;
                 OnPropertyChange("DisplayImage");
@@ -259,6 +312,7 @@ namespace ImageViewer.MVVM.ViewModel
         private void Clear_Click()
         {
             DisplayImage = new FolderImage("", emty);
+            //Images.Clear();
         }
 
         // ... Your other code ...
@@ -302,31 +356,30 @@ namespace ImageViewer.MVVM.ViewModel
                 using (Image<Gray, byte> grayImage = ImageColor ? null : new Image<Gray, byte>(DisplayImage.Path))
                 using (Image<Bgr, byte> bgrImage = ImageColor ? new Image<Bgr, byte>(DisplayImage.Path) : null)
                 {
-                    //var image = ImageColor == true ? bgrImage : GrayImage;
 
-                    if (BlurValue > 0)
+                    if (BlurValue > 0 && BlurActive)
                     {
                         System.Drawing.Size blurSize = new System.Drawing.Size(31, 31); // You can adjust the blur size as needed
                         CvInvoke.GaussianBlur((ImageColor == true ? bgrImage:grayImage), (ImageColor == true ? bgrImage : grayImage), blurSize, BlurValue, BlurValue);
                     }
 
-                    if (TreshValue > 0)
+                    if (TreshValue > 0 && TreshActive)
                     {
                         CvInvoke.Threshold((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), TreshValue, MaxTreshValue, 0);
                     }
-                    if (ErodeIterations > 1)
+                    if (ErodeIterations > 1 && ErodeDilateActive)
                     {
                         var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
                         CvInvoke.Erode((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
-                    if (DilateIterations > 1)
+                    if (DilateIterations > 1 && ErodeDilateActive)
                     {
                         var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
                         CvInvoke.Dilate((ImageColor == true ? bgrImage : grayImage), (ImageColor == true ? bgrImage : grayImage), dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
-                    if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && !ImageColor)
+                    if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && !ImageColor && EdgeActive)
                     {
                         Image<Gray, byte> Temp = grayImage;
 

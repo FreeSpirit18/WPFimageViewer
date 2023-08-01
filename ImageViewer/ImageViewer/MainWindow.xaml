@@ -39,9 +39,6 @@
             <Image Grid.Column="0" Source="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"
                Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-            <!--<Image Grid.Column="1" 
-               Margin=" 10 10 10 10" HorizontalAlignment="Center" Source="{Binding FilterImage, Converter={emguConverter:Converter}}" VerticalAlignment="Center"/>-->
-
             <Image Grid.Column="1" Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image.Style>
                     <Style TargetType="Image">
@@ -59,12 +56,17 @@
 
 
             <Grid Grid.Column="2">
-                <StackPanel>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
                     <Expander  HorizontalAlignment="Stretch" >
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Blur" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding BlurActive, Mode=TwoWay}" 
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -76,16 +78,19 @@
                             
 
                             <Label Content="Blur value:"/>
-                            <Slider Minimum="0" Maximum="30" Value="{Binding BlurValue, Mode=TwoWay}" />
-                            
+                            <Slider Minimum="0" Maximum="30" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}">
+                                
+                            </Slider>
+
                         </StackPanel>
                     </Expander>
                     <Border />
+
                     <Expander  HorizontalAlignment="Stretch">
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Treshold" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding TreshActive, Mode=TwoWay}" 
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -95,23 +100,23 @@
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
                             <Label Content="Treshold value:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding TreshValue, Mode=TwoWay}"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding TreshValue, Mode=TwoWay}" IsEnabled="{Binding TreshActive}"/>
 
                             <Label Content="Max treshold value:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding MaxTreshValue, Mode=TwoWay}"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding MaxTreshValue, Mode=TwoWay}" IsEnabled="{Binding TreshActive}"/>
 
-                            <ComboBox ItemsSource="{Binding ThresholdType}"
-                                >
+                            <ComboBox ItemsSource="{Binding ThresholdType}">
                             </ComboBox>
 
                         </StackPanel>
                     </Expander>
                     <Border />
+                    
                     <Expander  HorizontalAlignment="Stretch" >
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Eroding" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ErodeDilateActive, Mode=TwoWay}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -122,11 +127,11 @@
 
                             <Label Content="Erode Iterations:"/>
                             <Slider Maximum="10" Minimum="0" Style="{StaticResource MaterialDesignDiscreteSlider}"
-                                TickFrequency="1" TickPlacement="Both" Value="{Binding ErodeIterations, Mode=TwoWay}"/>
+                                TickFrequency="1" TickPlacement="Both" Value="{Binding ErodeIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
 
                             <TextBlock Text="Dilate Iterations:"/>
                             <Slider Maximum="10" Minimum="0" Style="{StaticResource MaterialDesignDiscreteSlider}"
-                                TickFrequency="1" TickPlacement="Both" Value="{Binding DilateIterations, Mode=TwoWay}"/>
+                                TickFrequency="1" TickPlacement="Both" Value="{Binding DilateIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
 
                         </StackPanel>
                     </Expander>
@@ -135,7 +140,7 @@
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Edge" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ElementName=SnackbarOne, Path=IsActive, Mode=TwoWay}" 
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding EdgeActive, Mode=TwoWay}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -143,19 +148,22 @@
                             Margin="24,8,24,16"
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-                            <Button Content="Toggle Image Color" Command="{Binding ToggleColor}"/>
+                            
 
                             <Label Content="Edge treshold 1:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh1, Mode=TwoWay}"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh1, Mode=TwoWay}" IsEnabled="{Binding EdgeActive}"/>
 
                             <Label Content="Edge treshold 2:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh2, Mode=TwoWay}"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh2, Mode=TwoWay}" IsEnabled="{Binding EdgeActive}"/>
 
                         </StackPanel>
                     </Expander>
                     <Border />
                 </StackPanel>
-                <Button VerticalAlignment="Bottom" Content="Save image" Margin="15 10 15 10" Command="{Binding SaveCommand}"/>
+
+                <Button Grid.Row="1" VerticalAlignment="Bottom"  Content="Toggle Image Color" Margin="15 5 15 5" Command="{Binding ToggleColor}"/>
+                <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>
+
             </Grid>
             
 
