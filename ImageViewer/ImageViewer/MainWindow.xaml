@@ -86,7 +86,7 @@
                             
 
                             <Label Content="Blur value:"/>
-                            <Slider Minimum="0" Maximum="30" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}">
+                            <Slider Minimum="0" Maximum="20" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}">
                                 
                             </Slider>
 
@@ -113,8 +113,8 @@
                             <Label Content="Max treshold value:"/>
                             <Slider Minimum="0" Maximum="255"  Value="{Binding MaxTreshValue, Mode=TwoWay}" IsEnabled="{Binding TreshActive}"/>
 
-                            <ComboBox ItemsSource="{Binding ThresholdType}">
-                            </ComboBox>
+                            <ComboBox ItemsSource="{Binding ThresholdTypes}" SelectedItem="{Binding SelectedThreshold}" DisplayMemberPath="Key"/>
+
 
                         </StackPanel>
                     </Expander>

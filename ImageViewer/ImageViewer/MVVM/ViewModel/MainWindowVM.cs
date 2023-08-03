@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Drawing;
 using Emgu.CV.CvEnum;
 using System;
+using System.Collections.Generic;
 
 namespace ImageViewer.MVVM.ViewModel
 {
@@ -22,8 +23,16 @@ namespace ImageViewer.MVVM.ViewModel
         public MainWindowVM() {
             DisplayImage = new FolderImage("", emty);
             Images = new ObservableCollection<FolderImage>();
-            thresholdType = new ObservableCollection<string>();//make dictionary <string, int>
-            //treshSettings = new TreshFilterSettings(0,0, true);
+            thresholdTypes = new ObservableCollection<KeyValuePair<string, ThresholdType>>()
+            {
+                new KeyValuePair<string, ThresholdType>("Binary", ThresholdType.Binary),
+                new KeyValuePair<string, ThresholdType>("BinaryInv", ThresholdType.BinaryInv),
+                new KeyValuePair<string, ThresholdType>("Trunc", ThresholdType.Trunc),
+                new KeyValuePair<string, ThresholdType>("ToZero", ThresholdType.ToZero),
+                new KeyValuePair<string, ThresholdType>("ToZeroInv", ThresholdType.ToZeroInv)
+            };
+            SelectedThreshold = new KeyValuePair<string, ThresholdType>("Binary", ThresholdType.Binary);
+
             Grayscale = false;
 
             BlurActive = true;
@@ -31,15 +40,6 @@ namespace ImageViewer.MVVM.ViewModel
             ErodeDilateActive = true;
             EdgeActive = true;
 
-            /*
-            ThresholdType.Add("Binary");
-            ThresholdType.Add("BinaryInv");
-            ThresholdType.Add("Trunc");
-            ThresholdType.Add("ToZero");
-            ThresholdType.Add("ToZeroInv");
-            ThresholdType.Add("Mask");
-            ThresholdType.Add("Otsu");
-            */
 
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
@@ -51,7 +51,7 @@ namespace ImageViewer.MVVM.ViewModel
 
         private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
 
-        private string folder { get; set; }
+        private string Folder { get; set; }
 
         //---------Blur--------------------------
         private bool blurActive;
@@ -114,16 +114,28 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
-        private ObservableCollection<string> thresholdType;
-        public ObservableCollection<string> ThresholdType
+        private ObservableCollection<KeyValuePair<string, ThresholdType>> thresholdTypes;
+        public ObservableCollection<KeyValuePair<string, ThresholdType>> ThresholdTypes
         {
-            get { return thresholdType; }
+            get { return thresholdTypes; }
             set
             {
-                thresholdType = value;
+                thresholdTypes = value;
                 OnPropertyChange("ThresholdType");
             }
         }
+        private KeyValuePair<string, ThresholdType> selectedThreshold;
+        public KeyValuePair<string, ThresholdType> SelectedThreshold
+        {
+            get { return selectedThreshold; }
+            set
+            {
+                selectedThreshold = value;
+                OnPropertyChange("SelectedThreshold");
+                ApplyFilter();
+            }
+        }
+
         //-----------erode and dialate -----------------
         private bool erodeDilateActive;
         public bool ErodeDilateActive
@@ -268,8 +280,6 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
         //-----------------------------------------------------
-        
-        //--------------------------------------------------
         private void Select_Click()
         {
             WinForms.FolderBrowserDialog dialog = new WinForms.FolderBrowserDialog();
@@ -278,7 +288,7 @@ namespace ImageViewer.MVVM.ViewModel
 
             if (result == WinForms.DialogResult.OK)
             {
-                folder = dialog.SelectedPath;
+                Folder = dialog.SelectedPath;
 
                 Select_Images();
             }
@@ -291,7 +301,7 @@ namespace ImageViewer.MVVM.ViewModel
 
         private void Select_Images()
         {
-            string[] allFiles = Directory.GetFiles(folder);
+            string[] allFiles = Directory.GetFiles(Folder);
 
 
             string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff" };
@@ -314,16 +324,24 @@ namespace ImageViewer.MVVM.ViewModel
             //Images.Clear();
         }
 
-        // ... Your other code ...
-
         public void SaveImage()
         {
-            // Show the SaveFileDialog to get the file path and name
+            // Show the SaveFileDialog to get the file path and name 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "JPEG Image|*.jpg|PNG Image|*.png";
             if (saveFileDialog.ShowDialog() == true)
             {
                 string filePath = saveFileDialog.FileName;
+
+                if (File.Exists(filePath))
+                {
+                    try { 
+                        File.Delete(filePath);
+                    } catch {
+                        MessageBoxResult result = MessageBox.Show("The file already is currentley opened", "File opened", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                }
 
                 if (Grayscale)
                 {
@@ -348,9 +366,10 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
+
         private void ApplyFilter()
         {
-            if (DisplayImage != null)
+            if (DisplayImage != null && DisplayImage.Path != emty)
             {
 
                 using (Image<Bgr, byte> bgrImage = Grayscale ? null : new Image<Bgr, byte>(DisplayImage.Path))
@@ -359,21 +378,21 @@ namespace ImageViewer.MVVM.ViewModel
 
                     if (BlurValue > 0 && BlurActive)
                     {
-                        System.Drawing.Size blurSize = new System.Drawing.Size(31, 31); // You can adjust the blur size as needed
+                        System.Drawing.Size blurSize = new System.Drawing.Size(31, 31); 
                         CvInvoke.GaussianBlur((Grayscale ?  grayImage: bgrImage), (Grayscale ? grayImage : bgrImage), blurSize, BlurValue, BlurValue);
                     }
 
                     if (TreshValue > 0 && TreshActive)
                     {
-                        CvInvoke.Threshold((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), TreshValue, MaxTreshValue, 0);
+                        CvInvoke.Threshold((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), TreshValue, MaxTreshValue, SelectedThreshold.Value);
                     }
-                    if (ErodeIterations > 1 && ErodeDilateActive)
+                    if (ErodeDilateActive)
                     {
                         var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
                         CvInvoke.Erode((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
-                    if (DilateIterations > 1 && ErodeDilateActive)
+                    if (ErodeDilateActive)
                     {
                         var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
                         CvInvoke.Dilate((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
@@ -386,8 +405,6 @@ namespace ImageViewer.MVVM.ViewModel
                         CvInvoke.Canny(Temp, grayImage, EdgeTresh1, EdgeTresh2);
 
                     }
-
-                    //Bitmap blurredBitmap = image.ToBitmap();
 
                     if (Grayscale)
                     {

@@ -7,7 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-
         <ListView Name="folderImages" ItemsSource="{Binding Images}" SelectedItem="{Binding DisplayImage}" SelectionMode="Single">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
