@@ -20,6 +20,161 @@
           }
         }
       },
+      "Emgu.CV.Bitmap/4.7.0.5276": {
+        "type": "package",
+        "dependencies": {
+          "Emgu.CV": "4.7.0.5276",
+          "System.Drawing.Common": "7.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/Emgu.CV.Bitmap.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/Emgu.CV.Bitmap.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Emgu.CV.runtime.windows/4.7.0.5276": {
+        "type": "package",
+        "dependencies": {
+          "Emgu.CV": "4.7.0.5276",
+          "Emgu.runtime.windows.msvc.rt.arm64": "19.35.32217.1",
+          "Emgu.runtime.windows.msvc.rt.x64": "19.35.32217.1",
+          "Emgu.runtime.windows.msvc.rt.x86": "19.35.32217.1"
+        },
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/cvextern.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-x64/native/cvextern.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/opencv_videoio_ffmpeg470_64.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x86/native/cvextern.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/opencv_videoio_ffmpeg470.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
+      "Emgu.runtime.windows.msvc.rt.arm64/19.35.32217.1": {
+        "type": "package",
+        "runtimeTargets": {
+          "runtimes/win-arm64/native/concrt140.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-arm64/native/msvcp140.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-arm64/native/msvcp140_1.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-arm64/native/msvcp140_2.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-arm64/native/msvcp140_atomic_wait.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-arm64/native/msvcp140_codecvt_ids.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-arm64/native/vcruntime140.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          },
+          "runtimes/win-arm64/native/vcruntime140_1.dll": {
+            "assetType": "native",
+            "rid": "win-arm64"
+          }
+        }
+      },
+      "Emgu.runtime.windows.msvc.rt.x64/19.35.32217.1": {
+        "type": "package",
+        "runtimeTargets": {
+          "runtimes/win-x64/native/concrt140.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/msvcp140.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/msvcp140_1.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/msvcp140_2.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/msvcp140_atomic_wait.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/msvcp140_codecvt_ids.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/vcruntime140.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          },
+          "runtimes/win-x64/native/vcruntime140_1.dll": {
+            "assetType": "native",
+            "rid": "win-x64"
+          }
+        }
+      },
+      "Emgu.runtime.windows.msvc.rt.x86/19.35.32217.1": {
+        "type": "package",
+        "runtimeTargets": {
+          "runtimes/win-x86/native/concrt140.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/msvcp140.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/msvcp140_1.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/msvcp140_2.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/msvcp140_atomic_wait.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/msvcp140_codecvt_ids.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          },
+          "runtimes/win-x86/native/vcruntime140.dll": {
+            "assetType": "native",
+            "rid": "win-x86"
+          }
+        }
+      },
       "Fody/6.6.4": {
         "type": "package",
         "build": {
@@ -77,6 +232,28 @@
           "lib/netstandard1.0/_._": {}
         }
       },
+      "Microsoft.Win32.SystemEvents/7.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
+        }
+      },
       "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {
         "type": "package",
         "compile": {
@@ -123,6 +300,31 @@
         },
         "runtime": {
           "lib/netstandard1.0/_._": {}
+        }
+      },
+      "System.Drawing.Common/7.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "7.0.0"
+        },
+        "compile": {
+          "lib/net7.0/System.Drawing.Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net7.0/System.Drawing.Common.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "buildTransitive/net6.0/_._": {}
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net7.0/System.Drawing.Common.dll": {
+            "assetType": "runtime",
+            "rid": "win"
+          }
         }
       },
       "System.Drawing.Primitives/4.3.0": {
@@ -369,6 +571,106 @@
         "lib/xamarinios10/Emgu.CV.xml"
       ]
     },
+    "Emgu.CV.Bitmap/4.7.0.5276": {
+      "sha512": "0EGSsGVhRYBU9+UqaRB6JkIsxHOJpN5s7rE3W0zRRO9Gc41W2kWKcoghgfozxBEnCyGcOtlV0pj4VeIPxKizGg==",
+      "type": "package",
+      "path": "emgu.cv.bitmap/4.7.0.5276",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "docs/README.md",
+        "emgu.cv.bitmap.4.7.0.5276.nupkg.sha512",
+        "emgu.cv.bitmap.nuspec",
+        "lib/netstandard2.0/Emgu.CV.Bitmap.dll",
+        "lib/netstandard2.0/Emgu.CV.Bitmap.xml",
+        "nuget_icon.png"
+      ]
+    },
+    "Emgu.CV.runtime.windows/4.7.0.5276": {
+      "sha512": "SWg2+YQuvgZQAHtg/SqxvjNjhPCMi5qoFwUTPU71CqgtRJQLrvQBkSK6htGbgikvdma6oVuc995/UTlde99ZiQ==",
+      "type": "package",
+      "path": "emgu.cv.runtime.windows/4.7.0.5276",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "docs/README.md",
+        "docs/build_info_arm64.inc",
+        "docs/build_info_x64.inc",
+        "docs/build_info_x86.inc",
+        "emgu.cv.runtime.windows.4.7.0.5276.nupkg.sha512",
+        "emgu.cv.runtime.windows.nuspec",
+        "icon.png",
+        "runtimes/win-arm64/native/cvextern.dll",
+        "runtimes/win-x64/native/cvextern.dll",
+        "runtimes/win-x64/native/opencv_videoio_ffmpeg470_64.dll",
+        "runtimes/win-x86/native/cvextern.dll",
+        "runtimes/win-x86/native/opencv_videoio_ffmpeg470.dll"
+      ]
+    },
+    "Emgu.runtime.windows.msvc.rt.arm64/19.35.32217.1": {
+      "sha512": "RdocuSNxIriYWTfVuBCEnOSEwpDQ9SMbCu9baMx/Zf227U1OoOH5J5xNDrXgEaV6bkWJXwRaxStwYJf7oRUVkA==",
+      "type": "package",
+      "path": "emgu.runtime.windows.msvc.rt.arm64/19.35.32217.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "emgu.runtime.windows.msvc.rt.arm64.19.35.32217.1.nupkg.sha512",
+        "emgu.runtime.windows.msvc.rt.arm64.nuspec",
+        "icon.png",
+        "runtimes/win-arm64/native/concrt140.dll",
+        "runtimes/win-arm64/native/msvcp140.dll",
+        "runtimes/win-arm64/native/msvcp140_1.dll",
+        "runtimes/win-arm64/native/msvcp140_2.dll",
+        "runtimes/win-arm64/native/msvcp140_atomic_wait.dll",
+        "runtimes/win-arm64/native/msvcp140_codecvt_ids.dll",
+        "runtimes/win-arm64/native/vcruntime140.dll",
+        "runtimes/win-arm64/native/vcruntime140_1.dll"
+      ]
+    },
+    "Emgu.runtime.windows.msvc.rt.x64/19.35.32217.1": {
+      "sha512": "SlJMrQxWDeCnE+EVqoMyFdEYoC/BRp1L4MME/USM8Lmj0W4V8BP3L7qBDQTI1ssULlc7iCLXmueRnJtzQ5957A==",
+      "type": "package",
+      "path": "emgu.runtime.windows.msvc.rt.x64/19.35.32217.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "emgu.runtime.windows.msvc.rt.x64.19.35.32217.1.nupkg.sha512",
+        "emgu.runtime.windows.msvc.rt.x64.nuspec",
+        "icon.png",
+        "runtimes/win-x64/native/concrt140.dll",
+        "runtimes/win-x64/native/msvcp140.dll",
+        "runtimes/win-x64/native/msvcp140_1.dll",
+        "runtimes/win-x64/native/msvcp140_2.dll",
+        "runtimes/win-x64/native/msvcp140_atomic_wait.dll",
+        "runtimes/win-x64/native/msvcp140_codecvt_ids.dll",
+        "runtimes/win-x64/native/vcruntime140.dll",
+        "runtimes/win-x64/native/vcruntime140_1.dll"
+      ]
+    },
+    "Emgu.runtime.windows.msvc.rt.x86/19.35.32217.1": {
+      "sha512": "prVzHcx3Ge6TSxq9f0HN2P0imSDo8IF+hyEiqa9dx6t8TSRwF0hl56WhUvEFvU7SPE5wq2zVyAVCQ2KHziQa1w==",
+      "type": "package",
+      "path": "emgu.runtime.windows.msvc.rt.x86/19.35.32217.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "emgu.runtime.windows.msvc.rt.x86.19.35.32217.1.nupkg.sha512",
+        "emgu.runtime.windows.msvc.rt.x86.nuspec",
+        "icon.png",
+        "runtimes/win-x86/native/concrt140.dll",
+        "runtimes/win-x86/native/msvcp140.dll",
+        "runtimes/win-x86/native/msvcp140_1.dll",
+        "runtimes/win-x86/native/msvcp140_2.dll",
+        "runtimes/win-x86/native/msvcp140_atomic_wait.dll",
+        "runtimes/win-x86/native/msvcp140_codecvt_ids.dll",
+        "runtimes/win-x86/native/vcruntime140.dll"
+      ]
+    },
     "Fody/6.6.4": {
       "sha512": "vLZS+oa+ndUHYPlx/8n9bBTT3dHkCF0riml4paKq4D663+cZd47x1uagQo32D/gKFZ/sfmV1oqKaLmH0elxq4A==",
       "type": "package",
@@ -497,6 +799,37 @@
         "runtime.json"
       ]
     },
+    "Microsoft.Win32.SystemEvents/7.0.0": {
+      "sha512": "2nXPrhdAyAzir0gLl8Yy8S5Mnm/uBSQQA7jEsILOS1MTyS7DbmV1NgViMtvV1sfCD1ebITpNwb1NIinKeJgUVQ==",
+      "type": "package",
+      "path": "microsoft.win32.systemevents/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/Microsoft.Win32.SystemEvents.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/Microsoft.Win32.SystemEvents.targets",
+        "lib/net462/Microsoft.Win32.SystemEvents.dll",
+        "lib/net462/Microsoft.Win32.SystemEvents.xml",
+        "lib/net6.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/net6.0/Microsoft.Win32.SystemEvents.xml",
+        "lib/net7.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/net7.0/Microsoft.Win32.SystemEvents.xml",
+        "lib/netstandard2.0/Microsoft.Win32.SystemEvents.dll",
+        "lib/netstandard2.0/Microsoft.Win32.SystemEvents.xml",
+        "microsoft.win32.systemevents.7.0.0.nupkg.sha512",
+        "microsoft.win32.systemevents.nuspec",
+        "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.dll",
+        "runtimes/win/lib/net6.0/Microsoft.Win32.SystemEvents.xml",
+        "runtimes/win/lib/net7.0/Microsoft.Win32.SystemEvents.dll",
+        "runtimes/win/lib/net7.0/Microsoft.Win32.SystemEvents.xml",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "Microsoft.Xaml.Behaviors.Wpf/1.1.39": {
       "sha512": "8PZKqw9QOcu42xk8puY4P1+EXHL9YGOR9b7qhaYx5cILHul456H073tj99vyPcCt0W0781T9RwHqkx507ZyUpQ==",
       "type": "package",
@@ -555,6 +888,43 @@
         "lib/netstandard1.0/_._",
         "runtime.native.system.4.3.0.nupkg.sha512",
         "runtime.native.system.nuspec"
+      ]
+    },
+    "System.Drawing.Common/7.0.0": {
+      "sha512": "KIX+oBU38pxkKPxvLcLfIkOV5Ien8ReN78wro7OF5/erwcmortzeFx+iBswlh2Vz6gVne0khocQudGwaO1Ey6A==",
+      "type": "package",
+      "path": "system.drawing.common/7.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "buildTransitive/net461/System.Drawing.Common.targets",
+        "buildTransitive/net462/_._",
+        "buildTransitive/net6.0/_._",
+        "buildTransitive/netcoreapp2.0/System.Drawing.Common.targets",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net462/System.Drawing.Common.dll",
+        "lib/net462/System.Drawing.Common.xml",
+        "lib/net6.0/System.Drawing.Common.dll",
+        "lib/net6.0/System.Drawing.Common.xml",
+        "lib/net7.0/System.Drawing.Common.dll",
+        "lib/net7.0/System.Drawing.Common.xml",
+        "lib/netstandard2.0/System.Drawing.Common.dll",
+        "lib/netstandard2.0/System.Drawing.Common.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "runtimes/win/lib/net6.0/System.Drawing.Common.dll",
+        "runtimes/win/lib/net6.0/System.Drawing.Common.xml",
+        "runtimes/win/lib/net7.0/System.Drawing.Common.dll",
+        "runtimes/win/lib/net7.0/System.Drawing.Common.xml",
+        "system.drawing.common.7.0.0.nupkg.sha512",
+        "system.drawing.common.nuspec",
+        "useSharedDesignerContext.txt"
       ]
     },
     "System.Drawing.Primitives/4.3.0": {
@@ -1537,6 +1907,8 @@
   "projectFileDependencyGroups": {
     "net7.0-windows7.0": [
       "Emgu.CV >= 4.7.0.5276",
+      "Emgu.CV.Bitmap >= 4.7.0.5276",
+      "Emgu.CV.runtime.windows >= 4.7.0.5276",
       "MaterialDesignThemes >= 4.9.0",
       "PropertyChanged.Fody >= 4.1.0"
     ]
@@ -1581,6 +1953,14 @@
         "targetAlias": "net7.0-windows",
         "dependencies": {
           "Emgu.CV": {
+            "target": "Package",
+            "version": "[4.7.0.5276, )"
+          },
+          "Emgu.CV.Bitmap": {
+            "target": "Package",
+            "version": "[4.7.0.5276, )"
+          },
+          "Emgu.CV.runtime.windows": {
             "target": "Package",
             "version": "[4.7.0.5276, )"
           },

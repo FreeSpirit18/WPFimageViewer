@@ -5,6 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ImageViewer"
         xmlns:userControls="clr-namespace:ImageViewer.MVVM.View.userControls"
+        
+        xmlns:emguConverter="clr-namespace:ImageViewer.MVVM"
+        
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
          TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -15,48 +18,173 @@
          Background="#FFFAF3"
          FontFamily="{DynamicResource MaterialDesignFont}"
         Title="MainWindow" Height="450" Width="800">
-    
+    <Window.Resources>
+        <!-- Boolean to Visibility Converter -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!-- Custom Inverse Boolean Converter -->
+        <!--<local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>-->
+    </Window.Resources>
     <Grid >
         
         <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="80*"/>
-            <RowDefinition Height="15*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="17*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        
+        <userControls:menuBar Grid.Row="0" VerticalAlignment="Top"/>
+
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="45*"/>
-                <ColumnDefinition Width="45*"/>
-                <ColumnDefinition Width="10*"/>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="40*"/>
+                <ColumnDefinition Width="20*"/>
             </Grid.ColumnDefinitions>
 
             <Image Grid.Column="0" Source="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"
-               Margin=" 10 10 10 10"/>
+               Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+            <Image Grid.Column="1" Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Grayscale}" Value="True">
+                                <Setter Property="Source" Value="{Binding GrayImage, Converter={emguConverter:Converter}}"/>
+                                
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Grayscale}" Value="False">
+                                <Setter Property="Source" Value="{Binding BgrImage, Converter={emguConverter:Converter}}"/>
+                                
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="80*"/>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="10*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0">
+                    <Expander  HorizontalAlignment="Stretch" >
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Blur" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding BlurActive, Mode=TwoWay}" 
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel
+                            Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+                            
+
+                            <Label Content="Blur value:"/>
+                            <Slider Minimum="0" Maximum="20" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}">
+                                
+                            </Slider>
+
+                        </StackPanel>
+                    </Expander>
+                    <Border />
+
+                    <Expander  HorizontalAlignment="Stretch">
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Treshold" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding TreshActive, Mode=TwoWay}" 
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel
+                            Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+                            <Label Content="Treshold value:"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding TreshValue, Mode=TwoWay}" IsEnabled="{Binding TreshActive}"/>
+
+                            <Label Content="Max treshold value:"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding MaxTreshValue, Mode=TwoWay}" IsEnabled="{Binding TreshActive}"/>
+
+                            <ComboBox ItemsSource="{Binding ThresholdTypes}" SelectedItem="{Binding SelectedThreshold}" DisplayMemberPath="Key"/>
+
+
+                        </StackPanel>
+                    </Expander>
+                    <Border />
+                    
+                    <Expander  HorizontalAlignment="Stretch" >
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Eroding" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ErodeDilateActive, Mode=TwoWay}"
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel
+                            Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+                            <Label Content="Erode Iterations:"/>
+                            <Slider Maximum="10" Minimum="0" Style="{StaticResource MaterialDesignDiscreteSlider}"
+                                TickFrequency="1" TickPlacement="Both" Value="{Binding ErodeIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
+
+                            <TextBlock Text="Dilate Iterations:"/>
+                            <Slider Maximum="10" Minimum="0" Style="{StaticResource MaterialDesignDiscreteSlider}"
+                                TickFrequency="1" TickPlacement="Both" Value="{Binding DilateIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
+
+                        </StackPanel>
+                    </Expander>
+                    <Border />
+                    <Expander  HorizontalAlignment="Stretch" Visibility="{Binding Grayscale, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Expander.Header >
+                            <DockPanel >
+                                <TextBlock Text="Edge" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding EdgeActive, Mode=TwoWay}"
+                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                            </DockPanel>
+                        </Expander.Header>
+                        <StackPanel
+                            Margin="24,8,24,16"
+                            Orientation="Vertical"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+                            
+
+                            <Label Content="Edge treshold 1:"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh1, Mode=TwoWay}" IsEnabled="{Binding EdgeActive}"/>
+
+                            <Label Content="Edge treshold 2:"/>
+                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh2, Mode=TwoWay}" IsEnabled="{Binding EdgeActive}"/>
+
+                        </StackPanel>
+                    </Expander>
+                    <Border />
+                </StackPanel>
+                <StackPanel Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center"
+                            Margin="24,8,24,16"
+                            Orientation="Horizontal"
+                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
+
+                    <Label FontSize="15" Content="Grayscale:"/>
+                    <ToggleButton  IsChecked="{Binding Grayscale, Mode=TwoWay}"/>
+                
+
+                </StackPanel>
+                
+                <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>
+
+            </Grid>
+            
 
         </Grid>
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="50*"/>
-            </Grid.ColumnDefinitions>
-
-            <Button
-                Grid.Column="0"
-              Width="120"
-              Content="Folder select "
-              Style="{StaticResource MaterialDesignRaisedButton}"
-              ToolTip="Resource name: MaterialDesignRaisedButton" 
-                Command="{Binding SelectCommand}"/>
-
-            <Button
-                Grid.Column="1"
-              Width="120"
-              Content="Clear"
-              Style="{StaticResource MaterialDesignPaperButton}"
-              ToolTip="Resource name: MaterialDesignPaperButton" 
-                Command="{Binding ClearCommand}"/>
-
-        </Grid>
-        <userControls:customListView Grid.Row="1" HorizontalAlignment="Center"  />
+        <userControls:customListView Grid.Row="2" HorizontalAlignment="Center"  />
     </Grid>
 </Window>
