@@ -14,6 +14,7 @@ using System.Drawing;
 using Emgu.CV.CvEnum;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace ImageViewer.MVVM.ViewModel
 {
@@ -49,8 +50,13 @@ namespace ImageViewer.MVVM.ViewModel
         public RelayCommand ClearCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
 
-        private readonly string emty = "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
+        private readonly string emty = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
+        
+        private const string dllPath = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\x64\\Debug\OpencvWrapper.dll";
 
+        [DllImport(dllPath)]
+        private static extern void WrapGaussianBlur(Mat inputImage, System.Drawing.Size blurSize);
+        
         private string Folder { get; set; }
 
         //---------Blur--------------------------
@@ -372,49 +378,50 @@ namespace ImageViewer.MVVM.ViewModel
             if (DisplayImage != null && DisplayImage.Path != emty)
             {
 
-                using (Image<Bgr, byte> bgrImage = Grayscale ? null : new Image<Bgr, byte>(DisplayImage.Path))
-                using (Image<Gray, byte>  grayImage= Grayscale ? new Image<Gray, byte>(DisplayImage.Path) : null)
+                using (Mat image = new Mat(DisplayImage.Path))
                 {
 
                     if (BlurValue > 1 && BlurActive)
                     {
-                        System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue); 
+                        System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue);
+
+                        CvInvoke.GaussianBlur(image, image, blurSize, 0);
                         
-                        CvInvoke.GaussianBlur((Grayscale ?  grayImage: bgrImage), (Grayscale ? grayImage : bgrImage), blurSize, 0);
+                        //WrapGaussianBlur(image, blurSize);
                     }
 
                     if (TreshValue > 0 && TreshActive)
                     {
-                        CvInvoke.Threshold((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), TreshValue, MaxTreshValue, SelectedThreshold.Value);
+                        CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
                     }
                     if (ErodeDilateActive)
                     {
                         var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Erode((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+                        CvInvoke.Erode(image, image, erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
                     if (ErodeDilateActive)
                     {
                         var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Dilate((Grayscale ? grayImage : bgrImage), (Grayscale ? grayImage : bgrImage), dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+                        CvInvoke.Dilate(image, image, dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
                     if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && Grayscale && EdgeActive)
                     {
-                        Image<Gray, byte> Temp = grayImage;
+                        Mat Temp = image.Clone();
 
-                        CvInvoke.Canny(Temp, grayImage, EdgeTresh1, EdgeTresh2);
+                        CvInvoke.Canny(Temp, image, EdgeTresh1, EdgeTresh2);
 
                     }
 
                     if (Grayscale)
                     {
-                        Bitmap blurredBitmap = grayImage.ToBitmap();
+                        Bitmap blurredBitmap = image.ToBitmap();
                         GrayImage = blurredBitmap.ToImage<Gray, byte>();
                     }
                     else
                     {
-                        Bitmap blurredBitmap = bgrImage.ToBitmap();
+                        Bitmap blurredBitmap = image.ToBitmap();
                         BgrImage = blurredBitmap.ToImage<Bgr, byte>();
                     }
 

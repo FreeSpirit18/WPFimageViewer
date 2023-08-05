@@ -6,12 +6,11 @@
 #define EXPORT_METHOD extern "C" __declspec(dllexport)
 
 EXPORT_METHOD
-cv::Mat WrapGaussianBlur(const cv::Mat& inputImage, cv::Size blurSize)
+void WrapGaussianBlur(const cv::Mat& inputImage, cv::Size blurSize)
 {
     cv::Mat blurredImage;
-    cv::GaussianBlur(inputImage, blurredImage, blurSize, 0);
+    cv::GaussianBlur(inputImage, inputImage, blurSize, 0);
     
-    return blurredImage;
 }
 
 cv::Mat WrapThreshold(const cv::Mat& inputImage, double threshValue, double maxThreshValue, int thresholdType)

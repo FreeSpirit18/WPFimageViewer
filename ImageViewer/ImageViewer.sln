@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageViewer", "ImageViewer\ImageViewer.csproj", "{73F777B5-F617-4106-B21E-89E36330C79B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25B85625-9427-4048-B25B-96CC3921111F} = {25B85625-9427-4048-B25B-96CC3921111F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpencvWrapper", "OpencvWrapper\OpencvWrapper.vcxproj", "{25B85625-9427-4048-B25B-96CC3921111F}"
 EndProject
