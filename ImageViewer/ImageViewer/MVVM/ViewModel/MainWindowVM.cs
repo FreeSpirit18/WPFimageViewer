@@ -385,9 +385,9 @@ namespace ImageViewer.MVVM.ViewModel
                     {
                         System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue);
 
-                        CvInvoke.GaussianBlur(image, image, blurSize, 0);
+                        //CvInvoke.GaussianBlur(image, image, blurSize, 0);
                         
-                        //WrapGaussianBlur(image, blurSize);
+                        WrapGaussianBlur(image, blurSize);
                     }
 
                     if (TreshValue > 0 && TreshActive)
