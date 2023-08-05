@@ -66,8 +66,8 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
-        private double blurValue;
-        public double BlurValue
+        private int blurValue;
+        public int BlurValue
         {
             get { return blurValue; }
             set
@@ -376,10 +376,11 @@ namespace ImageViewer.MVVM.ViewModel
                 using (Image<Gray, byte>  grayImage= Grayscale ? new Image<Gray, byte>(DisplayImage.Path) : null)
                 {
 
-                    if (BlurValue > 0 && BlurActive)
+                    if (BlurValue > 1 && BlurActive)
                     {
-                        System.Drawing.Size blurSize = new System.Drawing.Size(31, 31); 
-                        CvInvoke.GaussianBlur((Grayscale ?  grayImage: bgrImage), (Grayscale ? grayImage : bgrImage), blurSize, BlurValue, BlurValue);
+                        System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue); 
+                        
+                        CvInvoke.GaussianBlur((Grayscale ?  grayImage: bgrImage), (Grayscale ? grayImage : bgrImage), blurSize, 0);
                     }
 
                     if (TreshValue > 0 && TreshActive)
