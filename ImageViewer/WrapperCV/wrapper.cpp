@@ -3,10 +3,6 @@
 
 #define EXPORT_METHOD extern "C" __declspec(dllexport)
 
-int main() {
-    return 0;
-}
-
 EXPORT_METHOD
 int TestFunck()
 {
@@ -15,46 +11,38 @@ int TestFunck()
 }
 
 EXPORT_METHOD
-void WrapGaussianBlur(const cv::Mat& inputImage, cv::Size blurSize)
+void WrapGaussianBlur(cv::Mat* inputImage, cv::Mat* outputImage, cv::Size blurSize)
 {
-    //cv::Mat blurredImage;
-    cv::GaussianBlur(inputImage, inputImage, blurSize, 0);
-
+    cv::GaussianBlur(*inputImage, *outputImage, blurSize, 0);
 }
 
 EXPORT_METHOD
-cv::Mat WrapThreshold(const cv::Mat& inputImage, double threshValue, double maxThreshValue, int thresholdType)
+void WrapThreshold(cv::Mat* inputImage, cv::Mat* outputImage, double threshValue, double maxThreshValue, int thresholdType)
 {
-    cv::Mat treshImage;
-    cv::threshold(inputImage, treshImage, threshValue, maxThreshValue, thresholdType);
-    return treshImage;
+    cv::threshold(*inputImage, *outputImage, threshValue, maxThreshValue, thresholdType);
 }
 
 EXPORT_METHOD
-cv::Mat WrapErode(const cv::Mat& inputImage, double erodeIterations)
+void WrapErode(cv::Mat* inputImage, cv::Mat* outputImage, double erodeIterations)
 {
-    cv::Mat erodedImage;
     cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3), cv::Point(-1, -1));
-    cv::erode(inputImage, erodedImage, element, cv::Point(-1, -1), erodeIterations, cv::BORDER_DEFAULT, cv::Scalar(255, 255, 255));
+    cv::erode(*inputImage, *outputImage, element, cv::Point(-1, -1), erodeIterations, cv::BORDER_DEFAULT, cv::Scalar(255, 255, 255));
 
-    return erodedImage;
 }
 
 EXPORT_METHOD
-cv::Mat WrapDilate(const cv::Mat& inputImage, double dilateIterations)
+void WrapDilate(cv::Mat* inputImage, cv::Mat* outputImage, double dilateIterations)
 {
-    cv::Mat dilatedImage;
+
     cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 3), cv::Point(-1, -1));
-    cv::dilate(inputImage, dilatedImage, element, cv::Point(-1, -1), dilateIterations, cv::BORDER_DEFAULT, cv::Scalar(255, 255, 255));
+    cv::dilate(*inputImage, *outputImage, element, cv::Point(-1, -1), dilateIterations, cv::BORDER_DEFAULT, cv::Scalar(255, 255, 255));
 
-    return dilatedImage;
 }
 
 EXPORT_METHOD
-cv::Mat WrapCanny(const cv::Mat& inputImage, double edgeTresh1, double edgeTresh2)
+void WrapCanny(cv::Mat* inputImage, cv::Mat* outputImage, double edgeTresh1, double edgeTresh2)
 {
-    cv::Mat cannyImage;
-    cv::Canny(inputImage, cannyImage, edgeTresh1, edgeTresh2);
 
-    return cannyImage;
+    cv::Canny(*inputImage, *outputImage, edgeTresh1, edgeTresh2);
+
 }

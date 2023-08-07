@@ -21,15 +21,15 @@ namespace ImageViewer.MVVM.ViewModel
         public MainWindowVM() {
             DisplayImage = new FolderImage("", emty);
             Images = new ObservableCollection<FolderImage>();
-            thresholdTypes = new ObservableCollection<KeyValuePair<string, ThresholdType>>()
+            thresholdTypes = new ObservableCollection<KeyValuePair<string, int>>()
             {
-                new KeyValuePair<string, ThresholdType>("Binary", ThresholdType.Binary),
-                new KeyValuePair<string, ThresholdType>("BinaryInv", ThresholdType.BinaryInv),
-                new KeyValuePair<string, ThresholdType>("Trunc", ThresholdType.Trunc),
-                new KeyValuePair<string, ThresholdType>("ToZero", ThresholdType.ToZero),
-                new KeyValuePair<string, ThresholdType>("ToZeroInv", ThresholdType.ToZeroInv)
+                new KeyValuePair<string, int>("Binary", 0),
+                new KeyValuePair<string, int>("BinaryInv", 1),
+                new KeyValuePair<string, int>("Trunc", 2),
+                new KeyValuePair<string, int>("ToZero", 3),
+                new KeyValuePair<string, int>("ToZeroInv", 4)
             };
-            SelectedThreshold = new KeyValuePair<string, ThresholdType>("Binary", ThresholdType.Binary);
+            SelectedThreshold = new KeyValuePair<string, int>("Binary", 0);
 
             Grayscale = false;
 
@@ -49,11 +49,7 @@ namespace ImageViewer.MVVM.ViewModel
 
         private readonly string emty = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
         
-        private const string dllPath = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\x64\\Debug\OpencvWrapper.dll";
 
-        //[DllImport(dllPath)]
-        //private static extern void WrapGaussianBlur(Mat inputImage, System.Drawing.Size blurSize);
-        
         private string Folder { get; set; }
 
         //---------Blur--------------------------
@@ -117,8 +113,8 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
-        private ObservableCollection<KeyValuePair<string, ThresholdType>> thresholdTypes;
-        public ObservableCollection<KeyValuePair<string, ThresholdType>> ThresholdTypes
+        private ObservableCollection<KeyValuePair<string, int>> thresholdTypes;
+        public ObservableCollection<KeyValuePair<string, int>> ThresholdTypes
         {
             get { return thresholdTypes; }
             set
@@ -127,8 +123,8 @@ namespace ImageViewer.MVVM.ViewModel
                 OnPropertyChange("ThresholdType");
             }
         }
-        private KeyValuePair<string, ThresholdType> selectedThreshold;
-        public KeyValuePair<string, ThresholdType> SelectedThreshold
+        private KeyValuePair<string, int> selectedThreshold;
+        public KeyValuePair<string, int> SelectedThreshold
         {
             get { return selectedThreshold; }
             set
@@ -383,31 +379,34 @@ namespace ImageViewer.MVVM.ViewModel
                         System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue);
 
                         //CvInvoke.GaussianBlur(image, image, blurSize, 0);
-                        //int test = Filter.TestFunck();
-                        Filter.WrapGaussianBlur(image, blurSize);
+                        Filter.WrapGaussianBlur(image, image, blurSize);
                     }
 
                     if (TreshValue > 0 && TreshActive)
                     {
-                        CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+                        Filter.WrapThreshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+                        //CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
                     }
                     if (ErodeDilateActive)
                     {
-                        var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Erode(image, image, erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+
+                        Filter.WrapErode(image, image, ErodeIterations);
+                        //var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
+                        //CvInvoke.Erode(image, image, erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
                     if (ErodeDilateActive)
                     {
-                        var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
-                        CvInvoke.Dilate(image, image, dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
+                        Filter.WrapDilate(image, image, DilateIterations);
+                        //var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
+                        //CvInvoke.Dilate(image, image, dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
                     if ((EdgeTresh1 > 0 || EdgeTresh2 > 0) && Grayscale && EdgeActive)
                     {
-                        Mat Temp = image.Clone();
-
-                        CvInvoke.Canny(Temp, image, EdgeTresh1, EdgeTresh2);
+                        Mat temp = image.Clone();
+                        Filter.WrapCanny(temp, image, EdgeTresh1, EdgeTresh2);
+                        //CvInvoke.Canny(Temp, image, EdgeTresh1, EdgeTresh2);
 
                     }
 

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <Content Include="WrapperCV.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
