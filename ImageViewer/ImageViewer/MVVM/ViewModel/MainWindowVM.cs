@@ -1,20 +1,17 @@
-﻿using ImageViewer.MVVM.Model;
-using ImageViewer.MVVM.ViewModel;
+﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
+using Emgu.CV.Structure;
+using ImageViewer.MVVM.Model;
 using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
-using Emgu.CV;
-using Emgu.CV.Structure;
-using System.Windows.Media;
-using System.Drawing;
-using Emgu.CV.CvEnum;
-using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using OpenCVLibrary;
 
 namespace ImageViewer.MVVM.ViewModel
 {
@@ -54,8 +51,8 @@ namespace ImageViewer.MVVM.ViewModel
         
         private const string dllPath = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\x64\\Debug\OpencvWrapper.dll";
 
-        [DllImport(dllPath)]
-        private static extern void WrapGaussianBlur(Mat inputImage, System.Drawing.Size blurSize);
+        //[DllImport(dllPath)]
+        //private static extern void WrapGaussianBlur(Mat inputImage, System.Drawing.Size blurSize);
         
         private string Folder { get; set; }
 
@@ -386,8 +383,8 @@ namespace ImageViewer.MVVM.ViewModel
                         System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue);
 
                         //CvInvoke.GaussianBlur(image, image, blurSize, 0);
-                        
-                        WrapGaussianBlur(image, blurSize);
+                        //int test = Filter.TestFunck();
+                        Filter.WrapGaussianBlur(image, blurSize);
                     }
 
                     if (TreshValue > 0 && TreshActive)

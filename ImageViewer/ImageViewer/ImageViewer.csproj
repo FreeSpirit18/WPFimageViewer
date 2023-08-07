@@ -16,4 +16,8 @@
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OpenCVLibrary\OpenCVLibrary.csproj" />
+  </ItemGroup>
+
 </Project>

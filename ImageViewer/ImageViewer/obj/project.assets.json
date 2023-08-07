@@ -545,6 +545,19 @@
             "related": ".xml"
           }
         }
+      },
+      "OpenCVLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Emgu.CV": "4.7.0.5276"
+        },
+        "compile": {
+          "bin/placeholder/OpenCVLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OpenCVLibrary.dll": {}
+        }
       }
     }
   },
@@ -1902,6 +1915,11 @@
         "system.threading.tasks.4.3.0.nupkg.sha512",
         "system.threading.tasks.nuspec"
       ]
+    },
+    "OpenCVLibrary/1.0.0": {
+      "type": "project",
+      "path": "../OpenCVLibrary/OpenCVLibrary.csproj",
+      "msbuildProject": "../OpenCVLibrary/OpenCVLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -1910,6 +1928,7 @@
       "Emgu.CV.Bitmap >= 4.7.0.5276",
       "Emgu.CV.runtime.windows >= 4.7.0.5276",
       "MaterialDesignThemes >= 4.9.0",
+      "OpenCVLibrary >= 1.0.0",
       "PropertyChanged.Fody >= 4.1.0"
     ]
   },
@@ -1939,7 +1958,11 @@
       "frameworks": {
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\OpenCVLibrary\\OpenCVLibrary.csproj": {
+              "projectPath": "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\OpenCVLibrary\\OpenCVLibrary.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
