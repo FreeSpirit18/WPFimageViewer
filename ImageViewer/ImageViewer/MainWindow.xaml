@@ -21,8 +21,83 @@
         <!-- Boolean to Visibility Converter -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-        <!-- Custom Inverse Boolean Converter -->
-        <!--<local:InverseBooleanConverter x:Key="InverseBooleanConverter"/>-->
+        <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#496FFF"/>
+        <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#FFFFFF"/>
+
+        <SolidColorBrush x:Key="PrimaryBlueColor" Color="#263FAA"/>
+        <SolidColorBrush x:Key="PrimaryGrayColor" Color="#64677A"/>
+
+        <SolidColorBrush x:Key="SecondaryBlueColor" Color="#496FFF"/>
+        <SolidColorBrush x:Key="SecondaryGrayColor" Color="#CECECE"/>
+
+        <SolidColorBrush x:Key="TertiaryBlueColor" Color="#C2D1FC"/>
+
+        <Style x:Key="ToggleTest" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Background" Value="{DynamicResource SecondaryGrayColor}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGrayColor}"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="MaxHeight" Value="20"/>
+            <Setter Property="MaxWidth" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid>
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}" 
+                                    CornerRadius="7" Height="{TemplateBinding Height}"
+                                    Width="{TemplateBinding Width}" 
+                                    VerticalAlignment="Center" 
+                                    HorizontalAlignment="Center"/>
+                            <Ellipse x:Name="Ellipse"
+                                     Height="20"
+                                     Width="20"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Center"
+                                     Fill="{DynamicResource SecondaryBackgroundColor}"
+                                     Stroke="{TemplateBinding BorderBrush}"
+                                     StrokeThickness="3"
+                                     ></Ellipse>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <EventTrigger RoutedEvent="Checked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="#C2D1FC" Duration="0:0:0.2"/>
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            To="15 0 0 0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Unchecked">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation Storyboard.TargetName="Border"
+                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                        To="#CECECE" Duration="0:0:0.2"/>
+                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
+                                                            Storyboard.TargetProperty="Margin"
+                                                            To="0 0 0 0" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Ellipse"
+                                    Property="Fill"
+                                    Value="{DynamicResource SecondaryBlueColor}"/>
+                                <Setter TargetName="Ellipse"
+                                    Property="Fill"
+                                    Value="{DynamicResource PrimaryBlueColor}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid >
         
@@ -73,7 +148,7 @@
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Blur" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding BlurActive, Mode=TwoWay}"  Style="{StaticResource ToggleButtonStyle}"
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding BlurActive, Mode=TwoWay}"  Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -82,12 +157,12 @@
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
 
-                            
+
 
                             <Label Content="Blur value:"/>
                             <Slider Minimum="1" Maximum="89" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}" 
                                     IsSnapToTickEnabled="True" TickFrequency="2" TickPlacement="Both">
-                                
+
                             </Slider>
 
                         </StackPanel>
@@ -98,7 +173,7 @@
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Treshold" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding TreshActive, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding TreshActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -119,12 +194,12 @@
                         </StackPanel>
                     </Expander>
                     <Border />
-                    
+
                     <Expander  HorizontalAlignment="Stretch" >
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Eroding" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ErodeDilateActive, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ErodeDilateActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -148,7 +223,7 @@
                         <Expander.Header >
                             <DockPanel >
                                 <TextBlock Text="Edge" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding EdgeActive, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"
+                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding EdgeActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -156,7 +231,7 @@
                             Margin="24,8,24,16"
                             Orientation="Vertical"
                             TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-                            
+
 
                             <Label Content="Edge treshold 1:"/>
                             <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh1, Mode=TwoWay}" IsEnabled="{Binding EdgeActive}"/>
@@ -169,23 +244,16 @@
                     <Border />
                 </StackPanel>
                 <StackPanel Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center"
-                            Margin="24,8,24,16"
+                            Margin="24,0,24,0"
                             Orientation="Horizontal"
                             >
 
                     <Label FontSize="15" Content="Grayscale:"/>
-                    <ToggleButton  IsChecked="{Binding Grayscale, Mode=TwoWay}" Style="{StaticResource ToggleButtonStyle}"/>
-                    
-
-
+                    <ToggleButton  IsChecked="{Binding Grayscale, Mode=TwoWay}" Style="{StaticResource ToggleTest}"/>
 
                 </StackPanel>
-                
                 <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>
-
             </Grid>
-            
-
         </Grid>
         <userControls:customListView Grid.Row="2" HorizontalAlignment="Center"  />
     </Grid>
