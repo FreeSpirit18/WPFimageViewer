@@ -54,7 +54,7 @@ namespace ImageViewer.MVVM.View.userControls {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ImageViewer;component/mvvm/view/usercontrols/menubar.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ImageViewer;V1.0.0.0;component/mvvm/view/usercontrols/menubar.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\..\MVVM\View\userControls\menuBar.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
