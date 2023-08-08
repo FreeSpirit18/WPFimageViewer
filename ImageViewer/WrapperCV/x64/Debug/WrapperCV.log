@@ -1,0 +1,5 @@
+﻿  wrapper.cpp
+C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\WrapperCV\wrapper.cpp(29,70): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\WrapperCV\wrapper.cpp(38,71): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+     Creating library C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\x64\Debug\WrapperCV.lib and object C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\x64\Debug\WrapperCV.exp
+  WrapperCV.vcxproj -> C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\x64\Debug\WrapperCV.dll

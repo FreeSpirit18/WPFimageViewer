@@ -86,7 +86,8 @@
                             
 
                             <Label Content="Blur value:"/>
-                            <Slider Minimum="0" Maximum="20" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}">
+                            <Slider Minimum="1" Maximum="89" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}" 
+                                    IsSnapToTickEnabled="True" TickFrequency="2" TickPlacement="Both">
                                 
                             </Slider>
 
