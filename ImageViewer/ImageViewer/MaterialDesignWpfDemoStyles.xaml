@@ -16,5 +16,34 @@
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="Height" Value="1"/>
     </Style>
+  <Style TargetType="{x:Type ToggleButton}" x:Key="ToggleButtonStyle">
     
+    <Setter Property="Background" Value="Gray"/>
+          <Setter Property="Template">
+            <Setter.Value>
+              <ControlTemplate TargetType="ToggleButton">
+                <Grid>
+                  <Ellipse Name="Ellipse" Fill="{TemplateBinding Background}" Width="20" Height="15"/>
+                  <Ellipse Name="Thumb" Fill="White" Width="5" Height="5" RenderTransformOrigin="0.5,0.5">
+                    <Ellipse.RenderTransform>
+                      <TranslateTransform X="0" Y="0"/>
+                    </Ellipse.RenderTransform>
+                  </Ellipse>
+                </Grid>
+                <ControlTemplate.Triggers>
+                  <Trigger Property="IsChecked" Value="True">
+                    <Setter TargetName="Ellipse" Property="Fill" Value="Green"/>
+                    <Setter TargetName="Thumb" Property="RenderTransform">
+                      <Setter.Value>
+                        <TranslateTransform X="24" Y="0"/>
+                      </Setter.Value>
+                    </Setter>
+                  </Trigger>
+                </ControlTemplate.Triggers>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        
+
+  </Style>
 </ResourceDictionary>
