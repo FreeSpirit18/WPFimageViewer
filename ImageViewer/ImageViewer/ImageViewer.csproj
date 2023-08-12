@@ -20,4 +20,10 @@
     <ProjectReference Include="..\OpenCVLibrary\OpenCVLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="No_Image_Available.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

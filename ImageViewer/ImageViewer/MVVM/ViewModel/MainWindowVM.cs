@@ -32,7 +32,7 @@ namespace ImageViewer.MVVM.ViewModel
             SelectedThreshold = new KeyValuePair<string, int>("Binary", 0);
 
             Grayscale = false;
-
+            Mode = "ligth";
             BlurActive = true;
             TreshActive = true;
             ErodeDilateActive = true;
@@ -42,10 +42,14 @@ namespace ImageViewer.MVVM.ViewModel
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
             SaveCommand = new RelayCommand(execute => SaveImage(), canExecute => { return true; });
+            NigthCommand = new RelayCommand(execute => ChangeToDark(), canExecute => { return true; });
+            DayCommand = new RelayCommand(execute => ChangeToLigth(), canExecute => { return true; });
         }
         public RelayCommand SelectCommand { get; private set; }
         public RelayCommand ClearCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand NigthCommand { get; private set; }
+        public RelayCommand DayCommand { get; private set; }
 
         private readonly string emty = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
         
@@ -265,6 +269,7 @@ namespace ImageViewer.MVVM.ViewModel
             {
                 grayscale = value;
                 OnPropertyChange("Grayscale");
+                ApplyFilter();
             }
         }
         //---------------------------------------------------
@@ -278,7 +283,25 @@ namespace ImageViewer.MVVM.ViewModel
                 OnPropertyChange("Images");
             }
         }
+        //----------------------------------------------------
+        private string mode;
+        public string Mode
+        {
+            get { return mode; }
+            set { 
+                mode = value;
+                OnPropertyChange("Mode");
+            }
+        }
         //-----------------------------------------------------
+        private void ChangeToDark()
+        {
+            Mode = "nigth";
+        }
+        private void ChangeToLigth()
+        {
+            Mode = "ligth";
+        }
         private void Select_Click()
         {
             WinForms.FolderBrowserDialog dialog = new WinForms.FolderBrowserDialog();

@@ -67,3 +67,4 @@ C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\ImageViewer\bin\Debug
 C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\ImageViewer\bin\Debug\net7.0-windows\WrapperCV.dll
 C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\ImageViewer\obj\Debug\net7.0-windows\MVVM\View\userControls\customToggle.baml
 C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\ImageViewer\obj\Debug\net7.0-windows\MVVM\View\userControls\customToggle.g.cs
+C:\Users\admin\Documents\GitHub\WPFimageViewer\ImageViewer\ImageViewer\bin\Debug\net7.0-windows\No_Image_Available.jpg
