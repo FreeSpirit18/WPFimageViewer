@@ -34,6 +34,16 @@
 
         <SolidColorBrush x:Key="TertiaryBlueColor" Color="#FFCE9B"/>
 
+        <Style TargetType="Label">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Mode}" Value="nigth">
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+
+
         <Style x:Key="Background" TargetType="Grid">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Mode}" Value="ligth">
@@ -150,18 +160,18 @@
             </Image>
 
 
-            <Grid Grid.Column="2">
+            <Grid Grid.Column="2" Background="{StaticResource TertiaryBlueColor}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80*"/>
                     <RowDefinition Height="10*"/>
                     <RowDefinition Height="10*"/>
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0">
+                <StackPanel Grid.Row="0" >
                     <Expander  HorizontalAlignment="Stretch" >
                         <Expander.Header >
-                            <DockPanel >
-                                <TextBlock Text="Blur" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding BlurActive, Mode=TwoWay}"  Style="{StaticResource ToggleTest}"
+                            <DockPanel Width="100">
+                                <Label FontSize="15" Content="Blur" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <ToggleButton IsChecked="{Binding BlurActive, Mode=TwoWay}"  Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
                         </Expander.Header>
@@ -184,8 +194,8 @@
 
                     <Expander  HorizontalAlignment="Stretch">
                         <Expander.Header >
-                            <DockPanel >
-                                <TextBlock Text="Treshold" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                            <DockPanel Width="100">
+                                <Label FontSize="15" Content="Treshold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                 <ToggleButton Margin="0,8,0,0" IsChecked="{Binding TreshActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
@@ -210,8 +220,8 @@
 
                     <Expander  HorizontalAlignment="Stretch" >
                         <Expander.Header >
-                            <DockPanel >
-                                <TextBlock Text="Eroding" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                            <DockPanel Width="100">
+                                <Label FontSize="15" Content="Eroding" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ErodeDilateActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
@@ -225,7 +235,7 @@
                             <Slider Maximum="10" Minimum="0" 
                                 TickFrequency="1" TickPlacement="Both" Value="{Binding ErodeIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
 
-                            <TextBlock Text="Dilate Iterations:"/>
+                            <Label Content="Dilate Iterations:"/>
                             <Slider Maximum="10" Minimum="0" 
                                 TickFrequency="1" TickPlacement="Both" Value="{Binding DilateIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
 
@@ -234,8 +244,8 @@
                     <Border />
                     <Expander  HorizontalAlignment="Stretch" Visibility="{Binding Grayscale, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Expander.Header >
-                            <DockPanel >
-                                <TextBlock Text="Edge" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource HeaderTextBlockStyle}" />
+                            <DockPanel Width="100">
+                                <Label FontSize="15" Content="Edge" HorizontalAlignment="Left" VerticalAlignment="Center"  />
                                 <ToggleButton Margin="0,8,0,0" IsChecked="{Binding EdgeActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
                                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
                             </DockPanel>
@@ -260,9 +270,11 @@
                             Margin="24,0,24,0"
                             Orientation="Horizontal"
                             >
-
-                    <Label FontSize="15" Content="Grayscale:"/>
-                    <ToggleButton  IsChecked="{Binding Grayscale, Mode=TwoWay}" Style="{StaticResource ToggleTest}"/>
+                    <DockPanel Width="Auto">
+                        <Label FontSize="15" Content="Grayscale:"/>
+                        <ToggleButton  IsChecked="{Binding Grayscale, Mode=TwoWay}" Style="{StaticResource ToggleTest}"/>
+                    </DockPanel>
+                    
 
                 </StackPanel>
                 <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>

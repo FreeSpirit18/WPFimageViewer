@@ -6,8 +6,18 @@
              xmlns:local="clr-namespace:ImageViewer.MVVM.View.userControls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Mode}" Value="nigth">
+                    <Setter Property="Foreground" Value="White"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+    </UserControl.Resources>
     <Grid>
-        <ListView Name="folderImages" ItemsSource="{Binding Images}" SelectedItem="{Binding DisplayImage}" SelectionMode="Single">
+        <ListView Name="folderImages" BorderThickness="0" Background="Transparent" ItemsSource="{Binding Images}" SelectedItem="{Binding DisplayImage}" SelectionMode="Single">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Orientation="Horizontal"/>
@@ -17,7 +27,8 @@
                 <DataTemplate>
                     <StackPanel Orientation="Vertical" Margin="5">
                         <Image Source="{Binding Path}" Height="80" Width="80" Margin="1"/>
-                        <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis" MaxWidth="110" ToolTip="{Binding Name}"/>
+                        <TextBlock  Text="{Binding Name}" TextTrimming="CharacterEllipsis" MaxWidth="110" ToolTip="{Binding Name}">
+                        </TextBlock>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
