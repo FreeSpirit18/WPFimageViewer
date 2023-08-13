@@ -32,7 +32,8 @@
         <SolidColorBrush x:Key="SecondaryBlueColor" Color="#F25F0F"/>
         <SolidColorBrush x:Key="SecondaryGrayColor" Color="#CECECE"/>
 
-        <SolidColorBrush x:Key="TertiaryBlueColor" Color="#FFCE9B"/>
+        <SolidColorBrush x:Key="TertiaryBlueColor" Color="#F3E7DB"/>
+        <SolidColorBrush x:Key="TertiaryNigthBlueColor" Color="#514B45"/>
 
         <Style TargetType="Label">
             <Style.Triggers>
@@ -160,7 +161,19 @@
             </Image>
 
 
-            <Grid Grid.Column="2" Background="{StaticResource TertiaryBlueColor}">
+            <Grid Grid.Column="2">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Mode}" Value="ligth">
+                                <Setter Property="Background" Value="{StaticResource TertiaryBlueColor}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Mode}" Value="nigth">
+                                <Setter Property="Background" Value="{StaticResource TertiaryNigthBlueColor}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80*"/>
                     <RowDefinition Height="10*"/>
@@ -280,6 +293,21 @@
                 <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>
             </Grid>
         </Grid>
-        <userControls:customListView Grid.Row="2" HorizontalAlignment="Center"  />
+        <Grid Grid.Row="2">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Mode}" Value="ligth">
+                            <Setter Property="Background" Value="{StaticResource TertiaryBlueColor}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Mode}" Value="nigth">
+                            <Setter Property="Background" Value="{StaticResource TertiaryNigthBlueColor}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <userControls:customListView Grid.Row="2" HorizontalAlignment="Center"  />
+        </Grid>
+        
     </Grid>
 </Window>
