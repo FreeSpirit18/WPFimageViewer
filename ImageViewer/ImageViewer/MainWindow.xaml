@@ -21,107 +21,6 @@
         <!-- Boolean to Visibility Converter -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
-        <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#FF892A"/>
-        <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#FFF1E4"/>
-
-        <SolidColorBrush x:Key="SecondaryNigthBackgroundColor" Color="#3E3935"/>
-
-        <SolidColorBrush x:Key="PrimaryBlueColor" Color="#EA7212"/>
-        <SolidColorBrush x:Key="PrimaryGrayColor" Color="#64677A"/>
-
-        <SolidColorBrush x:Key="SecondaryBlueColor" Color="#F25F0F"/>
-        <SolidColorBrush x:Key="SecondaryGrayColor" Color="#CECECE"/>
-
-        <SolidColorBrush x:Key="TertiaryBlueColor" Color="#F3E7DB"/>
-        <SolidColorBrush x:Key="TertiaryNigthBlueColor" Color="#514B45"/>
-
-        <Style TargetType="Label">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Mode}" Value="nigth">
-                    <Setter Property="Foreground" Value="White"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-
-
-        <Style x:Key="Background" TargetType="Grid">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Mode}" Value="ligth">
-                    <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding Mode}" Value="nigth">
-                    <Setter Property="Background" Value="{DynamicResource SecondaryNigthBackgroundColor}"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="ToggleTest" TargetType="{x:Type ToggleButton}">
-            <Setter Property="Background" Value="{DynamicResource SecondaryGrayColor}"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource PrimaryGrayColor}"/>
-            <Setter Property="Height" Value="20"/>
-            <Setter Property="Width" Value="35"/>
-            <Setter Property="MaxHeight" Value="20"/>
-            <Setter Property="MaxWidth" Value="35"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Grid>
-                            <Border x:Name="Border"
-                                    Background="{TemplateBinding Background}" 
-                                    CornerRadius="7" Height="{TemplateBinding Height}"
-                                    Width="{TemplateBinding Width}" 
-                                    VerticalAlignment="Center" 
-                                    HorizontalAlignment="Center"/>
-                            <Ellipse x:Name="Ellipse"
-                                     Height="20"
-                                     Width="20"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Center"
-                                     Fill="{DynamicResource SecondaryBackgroundColor}"
-                                     Stroke="{TemplateBinding BorderBrush}"
-                                     StrokeThickness="3"
-                                     ></Ellipse>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <EventTrigger RoutedEvent="Checked">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border"
-                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="#FFCE9B" Duration="0:0:0.2"/>
-                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                            Storyboard.TargetProperty="Margin"
-                                                            To="15 0 0 0" Duration="0:0:0.2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="Unchecked">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Border"
-                                                        Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                        To="#CECECE" Duration="0:0:0.2"/>
-                                        <ThicknessAnimation Storyboard.TargetName="Ellipse"
-                                                            Storyboard.TargetProperty="Margin"
-                                                            To="0 0 0 0" Duration="0:0:0.2"/>
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Ellipse"
-                                    Property="Fill"
-                                    Value="{DynamicResource SecondaryBlueColor}"/>
-                                <Setter TargetName="Ellipse"
-                                    Property="Fill"
-                                    Value="{DynamicResource PrimaryBlueColor}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                        
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
     <Grid Style="{StaticResource Background}">
 
@@ -139,41 +38,53 @@
                 <ColumnDefinition Width="40*"/>
                 <ColumnDefinition Width="20*"/>
             </Grid.ColumnDefinitions>
-
-            <Image Grid.Column="0" Source="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"
-               Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+            <!--Uneddited image-->
+            <Image Grid.Column="0" Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Image.Style>
+                    <Style TargetType="{x:Type Image}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ImageActive}" Value="true">
+                                <Setter Property="Source" Value="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ImageActive}" Value="false">
+                                <Setter Property="Source" Value="{StaticResource emty}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>
+            
+            <!--Eddited image-->
             <Image Grid.Column="1" Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Image.Style>
                     <Style TargetType="Image">
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Grayscale}" Value="True">
+                            <DataTrigger Binding="{Binding ImageActive}" Value="false">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                            </DataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Grayscale}" Value="True"/>
+                                    <Condition Binding="{Binding ImageActive}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
                                 <Setter Property="Source" Value="{Binding GrayImage, Converter={emguConverter:Converter}}"/>
-                                
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Grayscale}" Value="False">
+                            </MultiDataTrigger>
+
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Grayscale}" Value="False"/>
+                                    <Condition Binding="{Binding ImageActive}" Value="true"/>
+                                </MultiDataTrigger.Conditions>
                                 <Setter Property="Source" Value="{Binding BgrImage, Converter={emguConverter:Converter}}"/>
-                                
-                            </DataTrigger>
+                            </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Image.Style>
             </Image>
 
 
-            <Grid Grid.Column="2">
-                <Grid.Style>
-                    <Style TargetType="Grid">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Mode}" Value="ligth">
-                                <Setter Property="Background" Value="{StaticResource TertiaryBlueColor}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Mode}" Value="nigth">
-                                <Setter Property="Background" Value="{StaticResource TertiaryNigthBlueColor}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Grid.Style>
+            <Grid Grid.Column="2" Style="{StaticResource SecondaryGridBackground}">
+                
                 <Grid.RowDefinitions>
                     <RowDefinition Height="80*"/>
                     <RowDefinition Height="10*"/>
@@ -293,19 +204,7 @@
                 <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>
             </Grid>
         </Grid>
-        <Grid Grid.Row="2">
-            <Grid.Style>
-                <Style TargetType="Grid">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Mode}" Value="ligth">
-                            <Setter Property="Background" Value="{StaticResource TertiaryBlueColor}"/>
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Mode}" Value="nigth">
-                            <Setter Property="Background" Value="{StaticResource TertiaryNigthBlueColor}"/>
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Grid.Style>
+        <Grid Grid.Row="2" Style="{StaticResource SecondaryGridBackground}">
             <userControls:customListView Grid.Row="2" HorizontalAlignment="Center"  />
         </Grid>
         

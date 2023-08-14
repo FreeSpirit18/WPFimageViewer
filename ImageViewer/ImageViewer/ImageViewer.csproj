@@ -9,6 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="images\kisspng-price.png" />
+    <None Remove="images\No_Image_Available.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Emgu.CV" Version="4.7.0.5276" />
     <PackageReference Include="Emgu.CV.Bitmap" Version="4.7.0.5276" />
     <PackageReference Include="Emgu.CV.runtime.windows" Version="4.7.0.5276" />
@@ -21,9 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="No_Image_Available.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="images\kisspng-price.png" />
+    <Resource Include="images\No_Image_Available.jpg" />
   </ItemGroup>
 
 </Project>

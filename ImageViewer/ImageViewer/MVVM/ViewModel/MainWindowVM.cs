@@ -19,7 +19,7 @@ namespace ImageViewer.MVVM.ViewModel
     {
         
         public MainWindowVM() {
-            DisplayImage = new FolderImage("", emty);
+            DisplayImage = new FolderImage("", "");
             Images = new ObservableCollection<FolderImage>();
             thresholdTypes = new ObservableCollection<KeyValuePair<string, int>>()
             {
@@ -31,6 +31,7 @@ namespace ImageViewer.MVVM.ViewModel
             };
             SelectedThreshold = new KeyValuePair<string, int>("Binary", 0);
 
+            ImageActive = false;
             Grayscale = false;
             Mode = "ligth";
             BlurActive = true;
@@ -51,8 +52,6 @@ namespace ImageViewer.MVVM.ViewModel
         public RelayCommand NigthCommand { get; private set; }
         public RelayCommand DayCommand { get; private set; }
 
-        private readonly string emty = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
-        
 
         private string Folder { get; set; }
 
@@ -219,11 +218,14 @@ namespace ImageViewer.MVVM.ViewModel
             set
             {
                 displayImage = value;
-                if (displayImage != null)
+                if (displayImage != null && displayImage.Path != "")
                 {
+                    ImageActive = true;
                     BgrImage = new Image<Bgr, byte>(value.Path);
                     GrayImage = new Image<Gray, byte>(value.Path);
-                }
+                }else
+                    ImageActive = false;
+
                 EdgeTresh1 = 0;
                 EdgeTresh2 = 0;
                 BlurValue = 0;
@@ -237,6 +239,17 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
+        private bool imageActive;
+        public bool ImageActive
+        {
+            get { return imageActive; }
+            set
+            {
+                imageActive = value;
+                ApplyFilter();
+                OnPropertyChange("ImageActive");
+            }
+        }
         //---------------------------------------------------
         private Image<Gray, byte> grayImage;
         public Image<Gray, byte> GrayImage
@@ -336,13 +349,13 @@ namespace ImageViewer.MVVM.ViewModel
                 Images.Add(new FolderImage(Path.GetFileName(ImagePaths[i]), ImagePaths[i]));
 
             }
-            DisplayImage = new FolderImage("", emty);
+            ImageActive = false;
 
         }
 
         private void Clear_Click()
         {
-            DisplayImage = new FolderImage("", emty);
+            ImageActive = false;
             //Images.Clear();
         }
 
@@ -391,7 +404,7 @@ namespace ImageViewer.MVVM.ViewModel
 
         private void ApplyFilter()
         {
-            if (DisplayImage != null && DisplayImage.Path != emty)
+            if (DisplayImage != null && DisplayImage.Path != "")
             {
 
                 using (Mat image = new Mat(DisplayImage.Path))
