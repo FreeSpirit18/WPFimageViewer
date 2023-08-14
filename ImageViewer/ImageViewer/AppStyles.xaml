@@ -20,7 +20,9 @@
     <SolidColorBrush x:Key="TertiaryBlueColor" Color="#F3E7DB"/>
     <SolidColorBrush x:Key="TertiaryNigthBlueColor" Color="#514B45"/>
 
-    
+    <Style TargetType="Expander">
+        
+    </Style>
     
     <Style TargetType="{x:Type Menu}" x:Key="customMenu">
         <Setter Property="Height" Value="16"/>
