@@ -1,19 +1,17 @@
 ﻿using Emgu.CV;
-using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using ImageViewer.MVVM.Model;
 using Microsoft.Win32;
+using OpenCVLibrary;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using WinForms = System.Windows.Forms;
-using OpenCVLibrary;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ImageViewer.MVVM.ViewModel
 {

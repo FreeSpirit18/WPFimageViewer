@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using ImageViewer.MVVM.ViewModel;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,6 +24,8 @@ namespace ImageViewer.MVVM.View.userControls
         public _3DEdit()
         {
             InitializeComponent();
+            _3DEditVM vm = new _3DEditVM();
+            DataContext = vm;
         }
     }
 }
