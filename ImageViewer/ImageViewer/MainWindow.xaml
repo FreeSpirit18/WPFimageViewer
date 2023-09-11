@@ -22,190 +22,40 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
     </Window.Resources>
+    
     <Grid Style="{StaticResource Background}">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="80*"/>
-            <RowDefinition Height="17*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="96*"/>
         </Grid.RowDefinitions>
         
         <userControls:menuBar Grid.Row="0" VerticalAlignment="Top"/>
+        <!--<userControls:ImageEdit Grid.Row="1"/>-->
+        <userControls:_3DEdit Grid.Row="1"/>
 
-        <Grid Grid.Row="1">
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40*"/>
-                <ColumnDefinition Width="40*"/>
-                <ColumnDefinition Width="20*"/>
-            </Grid.ColumnDefinitions>
-            
-            <!--Uneddited image-->
-            <Image Grid.Column="0" Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image.Style>
-                    <Style TargetType="{x:Type Image}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ImageActive}" Value="true">
-                                <Setter Property="Source" Value="{Binding DisplayImage.Path, UpdateSourceTrigger=PropertyChanged}"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ImageActive}" Value="false">
-                                <Setter Property="Source" Value="{StaticResource emty}"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-            
-            <!--Eddited image-->
-            <Image Grid.Column="1" Margin=" 10 10 10 10" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Image.Style>
-                    <Style TargetType="Image">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ImageActive}" Value="false">
-                                <Setter Property="Visibility" Value="Hidden"/>
-                            </DataTrigger>
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding Grayscale}" Value="True"/>
-                                    <Condition Binding="{Binding ImageActive}" Value="true"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Source" Value="{Binding GrayImage, Converter={emguConverter:Converter}}"/>
-                            </MultiDataTrigger>
+        <!--<ContentControl Grid.Row="1">
+            <ContentControl.Style>
+                <Style TargetType="ContentControl">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Display}" Value="image">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <userControls:ImageEdit />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Display}" Value="3d">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <userControls:_3DEdit />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ContentControl.Style>
+        </ContentControl>-->
 
-                            <MultiDataTrigger>
-                                <MultiDataTrigger.Conditions>
-                                    <Condition Binding="{Binding Grayscale}" Value="False"/>
-                                    <Condition Binding="{Binding ImageActive}" Value="true"/>
-                                </MultiDataTrigger.Conditions>
-                                <Setter Property="Source" Value="{Binding BgrImage, Converter={emguConverter:Converter}}"/>
-                            </MultiDataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Image.Style>
-            </Image>
-
-
-            <Grid Grid.Column="2" Style="{StaticResource SecondaryGridBackground}">
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="80*"/>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="10*"/>
-                </Grid.RowDefinitions>
-                
-                <StackPanel Grid.Row="0" >
-                    <Expander  HorizontalAlignment="Stretch" >
-                        <Expander.Header >
-                            <DockPanel Width="100">
-                                <Label FontSize="15" Content="Blur" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <ToggleButton IsChecked="{Binding BlurActive, Mode=TwoWay}"  Style="{StaticResource ToggleTest}"
-                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            </DockPanel>
-                        </Expander.Header>
-                        <StackPanel
-                            Margin="24,8,24,16"
-                            Orientation="Vertical"
-                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-
-
-
-                            <Label Content="Blur value:"/>
-                            <Slider Minimum="1" Maximum="89" Value="{Binding BlurValue, Mode=TwoWay}" IsEnabled="{Binding BlurActive}" 
-                                    IsSnapToTickEnabled="True" TickFrequency="2" TickPlacement="Both">
-
-                            </Slider>
-
-                        </StackPanel>
-                    </Expander>
-                    <Border />
-
-                    <Expander  HorizontalAlignment="Stretch">
-                        <Expander.Header >
-                            <DockPanel Width="100">
-                                <Label FontSize="15" Content="Treshold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding TreshActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
-                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            </DockPanel>
-                        </Expander.Header>
-                        <StackPanel
-                            Margin="24,8,24,16"
-                            Orientation="Vertical"
-                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-
-                            <Label Content="Treshold value:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding TreshValue, Mode=TwoWay}" IsEnabled="{Binding TreshActive}"/>
-
-                            <Label Content="Max treshold value:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding MaxTreshValue, Mode=TwoWay}" IsEnabled="{Binding TreshActive}"/>
-
-                            <ComboBox ItemsSource="{Binding ThresholdTypes}" SelectedItem="{Binding SelectedThreshold}" DisplayMemberPath="Key"/>
-
-
-                        </StackPanel>
-                    </Expander>
-                    <Border />
-
-                    <Expander  HorizontalAlignment="Stretch" >
-                        <Expander.Header >
-                            <DockPanel Width="100">
-                                <Label FontSize="15" Content="Eroding" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding ErodeDilateActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
-                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            </DockPanel>
-                        </Expander.Header>
-                        <StackPanel
-                            Margin="24,8,24,16"
-                            Orientation="Vertical"
-                            >
-
-                            <Label Content="Erode Iterations:"/>
-                            <Slider Maximum="10" Minimum="0" 
-                                TickFrequency="1" TickPlacement="Both" Value="{Binding ErodeIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
-
-                            <Label Content="Dilate Iterations:"/>
-                            <Slider Maximum="10" Minimum="0" 
-                                TickFrequency="1" TickPlacement="Both" Value="{Binding DilateIterations, Mode=TwoWay}" IsEnabled="{Binding ErodeDilateActive}"/>
-
-                        </StackPanel>
-                    </Expander>
-                    <Border />
-                    <Expander  HorizontalAlignment="Stretch" Visibility="{Binding Grayscale, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <Expander.Header >
-                            <DockPanel Width="100">
-                                <Label FontSize="15" Content="Edge" HorizontalAlignment="Left" VerticalAlignment="Center"  />
-                                <ToggleButton Margin="0,8,0,0" IsChecked="{Binding EdgeActive, Mode=TwoWay}" Style="{StaticResource ToggleTest}"
-                                          HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                            </DockPanel>
-                        </Expander.Header>
-                        <StackPanel
-                            Margin="24,8,24,16"
-                            Orientation="Vertical"
-                            TextBlock.Foreground="{DynamicResource MaterialDesignBody}">
-
-
-                            <Label Content="Edge treshold 1:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh1, Mode=TwoWay}" IsEnabled="{Binding EdgeActive}"/>
-
-                            <Label Content="Edge treshold 2:"/>
-                            <Slider Minimum="0" Maximum="255"  Value="{Binding EdgeTresh2, Mode=TwoWay}" IsEnabled="{Binding EdgeActive}"/>
-
-                        </StackPanel>
-                    </Expander>
-                    <Border />
-                </StackPanel>
-                <StackPanel Grid.Row="1" HorizontalAlignment="Center"  VerticalAlignment="Center"
-                            Margin="24,0,24,0" Orientation="Horizontal">
-                    
-                    <Label FontSize="15" Content="Grayscale:"/>
-                    <ToggleButton  IsChecked="{Binding Grayscale, Mode=TwoWay}" Style="{StaticResource ToggleTest}"/>
-                    
-                </StackPanel>
-                <Button Grid.Row="2" VerticalAlignment="Bottom" Content="Save image" Margin="15 5 15 5" Command="{Binding SaveCommand}"/>
-            </Grid>
-        </Grid>
-        <Grid Grid.Row="2" Style="{StaticResource SecondaryGridBackground}">
-            <userControls:customListView Grid.Row="2" HorizontalAlignment="Center"  />
-        </Grid>
-        
     </Grid>
 </Window>

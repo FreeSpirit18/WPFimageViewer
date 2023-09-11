@@ -7,7 +7,13 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="MVVM\View\userControls\3DEdit.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="MVVM\View\userControls\customListView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="MVVM\View\userControls\ImageEdit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="MVVM\View\userControls\menuBar.xaml.cs">
@@ -21,7 +27,13 @@
     <Page Update="AppStyles.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="MVVM\View\userControls\3DEdit.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MVVM\View\userControls\customListView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="MVVM\View\userControls\ImageEdit.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="MVVM\View\userControls\menuBar.xaml">

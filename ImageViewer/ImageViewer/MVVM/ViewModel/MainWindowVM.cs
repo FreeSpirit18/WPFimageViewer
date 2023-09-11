@@ -23,6 +23,7 @@ namespace ImageViewer.MVVM.ViewModel
         public MainWindowVM() {
             DisplayImage = new FolderImage("", "");
             Images = new ObservableCollection<FolderImage>();
+            Display = "image";
             thresholdTypes = new ObservableCollection<KeyValuePair<string, int>>()
             {
                 new KeyValuePair<string, int>("Binary", 0),
@@ -328,7 +329,26 @@ namespace ImageViewer.MVVM.ViewModel
                 OnPropertyChange("Mode");
             }
         }
+
+        private string display;
+        public string Display
+        {
+            get { return display; }
+            set
+            {
+                mode = value;
+                OnPropertyChange("Display");
+            }
+        }
         //-----------------------------------------------------
+        private void ChangeToImage()
+        {
+            Display = "image";
+        }
+        private void ChangeTo3D()
+        {
+            Display = "3d";
+        }
         private void ChangeToDark()
         {
             Mode = "nigth";
