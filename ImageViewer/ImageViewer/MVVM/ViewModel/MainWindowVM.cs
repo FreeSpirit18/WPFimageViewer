@@ -12,6 +12,8 @@ using System.Linq;
 using System.Windows;
 using WinForms = System.Windows.Forms;
 using OpenCVLibrary;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ImageViewer.MVVM.ViewModel
 {
@@ -19,7 +21,7 @@ namespace ImageViewer.MVVM.ViewModel
     {
         
         public MainWindowVM() {
-            DisplayImage = new FolderImage("", emty);
+            DisplayImage = new FolderImage("", "");
             Images = new ObservableCollection<FolderImage>();
             thresholdTypes = new ObservableCollection<KeyValuePair<string, int>>()
             {
@@ -31,8 +33,9 @@ namespace ImageViewer.MVVM.ViewModel
             };
             SelectedThreshold = new KeyValuePair<string, int>("Binary", 0);
 
+            ImageActive = false;
             Grayscale = false;
-
+            Mode = "ligth";
             BlurActive = true;
             TreshActive = true;
             ErodeDilateActive = true;
@@ -42,13 +45,15 @@ namespace ImageViewer.MVVM.ViewModel
             SelectCommand = new RelayCommand(execute => Select_Click(), canExecute => { return true; });
             ClearCommand = new RelayCommand(execute => Clear_Click(), canExecute => { return true; });
             SaveCommand = new RelayCommand(execute => SaveImage(), canExecute => { return true; });
+            NigthCommand = new RelayCommand(execute => ChangeToDark(), canExecute => { return true; });
+            DayCommand = new RelayCommand(execute => ChangeToLigth(), canExecute => { return true; });
         }
         public RelayCommand SelectCommand { get; private set; }
         public RelayCommand ClearCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
+        public RelayCommand NigthCommand { get; private set; }
+        public RelayCommand DayCommand { get; private set; }
 
-        private readonly string emty = @"C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\images\\No_Image_Available.jpg";
-        
 
         private string Folder { get; set; }
 
@@ -215,11 +220,15 @@ namespace ImageViewer.MVVM.ViewModel
             set
             {
                 displayImage = value;
-                if (displayImage != null)
+                if (displayImage != null && displayImage.Path != "")
                 {
-                    BgrImage = new Image<Bgr, byte>(value.Path);
-                    GrayImage = new Image<Gray, byte>(value.Path);
-                }
+                    ImageActive = true;
+                    filterImage = new Mat(displayImage.Path);
+                    BgrImage = new Image<Bgr, byte>(displayImage.Path);
+                    GrayImage = new Image<Gray, byte>(displayImage.Path);
+                }else
+                    ImageActive = false;
+
                 EdgeTresh1 = 0;
                 EdgeTresh2 = 0;
                 BlurValue = 0;
@@ -233,7 +242,18 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
-        //---------------------------------------------------
+        private bool imageActive;
+        public bool ImageActive
+        {
+            get { return imageActive; }
+            set
+            {
+                imageActive = value;
+                ApplyFilter();
+                OnPropertyChange("ImageActive");
+            }
+        }
+        
         private Image<Gray, byte> grayImage;
         public Image<Gray, byte> GrayImage
         {
@@ -256,6 +276,25 @@ namespace ImageViewer.MVVM.ViewModel
             }
         }
 
+        private Mat filterImage;
+        public Mat FilterImage
+        {
+            get { return filterImage; }
+            set
+            {
+                filterImage = value;
+                if (Grayscale)
+                {
+                    Bitmap blurredBitmap = filterImage.ToBitmap();
+                    GrayImage = blurredBitmap.ToImage<Gray, byte>();
+                }
+                else
+                {
+                    Bitmap blurredBitmap = filterImage.ToBitmap();
+                    BgrImage = blurredBitmap.ToImage<Bgr, byte>();
+                }
+            }
+        }
 
         private bool grayscale;
         public bool Grayscale
@@ -265,6 +304,7 @@ namespace ImageViewer.MVVM.ViewModel
             {
                 grayscale = value;
                 OnPropertyChange("Grayscale");
+                ApplyFilter();
             }
         }
         //---------------------------------------------------
@@ -278,7 +318,25 @@ namespace ImageViewer.MVVM.ViewModel
                 OnPropertyChange("Images");
             }
         }
+        //----------------------------------------------------
+        private string mode;
+        public string Mode
+        {
+            get { return mode; }
+            set { 
+                mode = value;
+                OnPropertyChange("Mode");
+            }
+        }
         //-----------------------------------------------------
+        private void ChangeToDark()
+        {
+            Mode = "nigth";
+        }
+        private void ChangeToLigth()
+        {
+            Mode = "ligth";
+        }
         private void Select_Click()
         {
             WinForms.FolderBrowserDialog dialog = new WinForms.FolderBrowserDialog();
@@ -298,13 +356,27 @@ namespace ImageViewer.MVVM.ViewModel
 
         }
 
-        private void Select_Images()
+        private async Task Select_Images()
         {
-            string[] allFiles = Directory.GetFiles(Folder);
+            await Task.Run(() =>
+            {
+                string[] allFiles = Directory.GetFiles(Folder);
+                string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff" };
+                string[] ImagePaths = allFiles.Where(file => imageExtensions.Contains(Path.GetExtension(file).ToLower())).ToArray();
 
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    Images.Clear();
+                    for (int i = 0; i < ImagePaths.Length; i++)
+                    {
+                        Images.Add(new FolderImage(Path.GetFileName(ImagePaths[i]), ImagePaths[i]));
+                    }
+                    ImageActive = false;
+                });
+            });
 
+            /*string[] allFiles = Directory.GetFiles(Folder);
             string[] imageExtensions = { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".tiff" };
-
             string[] ImagePaths = allFiles.Where(file => imageExtensions.Contains(Path.GetExtension(file).ToLower())).ToArray();
 
             Images.Clear();
@@ -313,13 +385,13 @@ namespace ImageViewer.MVVM.ViewModel
                 Images.Add(new FolderImage(Path.GetFileName(ImagePaths[i]), ImagePaths[i]));
 
             }
-            DisplayImage = new FolderImage("", emty);
+            ImageActive = false;*/
 
         }
 
         private void Clear_Click()
         {
-            DisplayImage = new FolderImage("", emty);
+            ImageActive = false;
             //Images.Clear();
         }
 
@@ -366,9 +438,49 @@ namespace ImageViewer.MVVM.ViewModel
         }
 
 
-        private void ApplyFilter()
+        private async Task ApplyBlur()
         {
-            if (DisplayImage != null && DisplayImage.Path != emty)
+            if (BlurValue > 1 && BlurActive)
+            {
+                System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue);
+
+                //CvInvoke.GaussianBlur(image, image, blurSize, 0);
+                Filter.WrapGaussianBlur(FilterImage, FilterImage, blurSize);
+            }
+        }
+
+        private async Task ApplyThresh()
+        {
+            if (TreshValue > 0 && TreshActive)
+            {
+                await Task.Run(() =>
+                {
+                    Filter.WrapThreshold(FilterImage, FilterImage, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+                });
+                //Filter.WrapThreshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+
+                //CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+            }
+        }
+
+        private async Task ApplyErode()
+        {
+            if (TreshValue > 0 && TreshActive)
+            {
+                await Task.Run(() =>
+                {
+                    Filter.WrapThreshold(FilterImage, FilterImage, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+                });
+                //Filter.WrapThreshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+
+                //CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+            }
+        }
+
+        private async Task ApplyFilter()
+        {
+            
+            if (DisplayImage != null && DisplayImage.Path != "")
             {
 
                 using (Mat image = new Mat(DisplayImage.Path))
@@ -377,27 +489,42 @@ namespace ImageViewer.MVVM.ViewModel
                     if (BlurValue > 1 && BlurActive)
                     {
                         System.Drawing.Size blurSize = new System.Drawing.Size(BlurValue, BlurValue);
-
                         //CvInvoke.GaussianBlur(image, image, blurSize, 0);
                         Filter.WrapGaussianBlur(image, image, blurSize);
                     }
 
                     if (TreshValue > 0 && TreshActive)
                     {
-                        Filter.WrapThreshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+                        await Task.Run(() =>
+                        {
+                            Filter.WrapThreshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+                        });
+                        //Filter.WrapThreshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
+
                         //CvInvoke.Threshold(image, image, TreshValue, MaxTreshValue, SelectedThreshold.Value);
                     }
+                    
                     if (ErodeDilateActive)
                     {
-
+                        //await Task.Run(() => { 
+                        //    Filter.WrapErode(image, image, ErodeIterations);
+                        //});
                         Filter.WrapErode(image, image, ErodeIterations);
+
+
                         //var erodeElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
                         //CvInvoke.Erode(image, image, erodeElement, new System.Drawing.Point(-1, -1), ErodeIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }
 
                     if (ErodeDilateActive)
                     {
+                        //await Task.Run(() =>
+                        //{
+                        //    Filter.WrapDilate(image, image, DilateIterations);
+                        //});
                         Filter.WrapDilate(image, image, DilateIterations);
+
+
                         //var dilateElement = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(3, 3), new System.Drawing.Point(-1, -1));
                         //CvInvoke.Dilate(image, image, dilateElement, new System.Drawing.Point(-1, -1), DilateIterations, BorderType.Default, new MCvScalar(255, 255, 255));
                     }

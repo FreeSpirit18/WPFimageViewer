@@ -5,13 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ImageViewer.MVVM.View.userControls"
              mc:Ignorable="d" 
-             d:DesignHeight="15" d:DesignWidth="800">
+             d:DesignHeight="16" d:DesignWidth="800">
+    
     <Grid>
-        <Menu Height="15" Background="#F1F1F1">
-            <MenuItem Header="File" FontSize="10" Height="15">
+        <Menu  Style="{StaticResource customMenu}">
+            <MenuItem Header="File" FontSize="10" Height="16">
                 <MenuItem Header="Select folder" Command="{Binding SelectCommand}"/>
                 <MenuItem Header="Clear" Command="{Binding ClearCommand}"/>
             </MenuItem>
+            <MenuItem Header="Display" FontSize="10" Height="16">
+                <MenuItem Header="Nigth" Command="{Binding NigthCommand}"/>
+                <MenuItem Header="Day" Command="{Binding DayCommand}"/>
+            </MenuItem>
         </Menu>
+        <Border/>
     </Grid>
 </UserControl>
