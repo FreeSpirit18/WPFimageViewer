@@ -13,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using OpenTK.Graphics.ES20;
+using OpenTK.Wpf;
+using OpenTK.Mathematics;
 
 namespace ImageViewer.MVVM.View.userControls
 {
@@ -24,8 +27,19 @@ namespace ImageViewer.MVVM.View.userControls
         public _3DEdit()
         {
             InitializeComponent();
-            _3DEditVM vm = new _3DEditVM();
-            DataContext = vm;
+            //_3DEditVM vm = new _3DEditVM();
+            //DataContext = vm;
+            var settings = new GLWpfControlSettings
+            {
+                MajorVersion = 4,
+                MinorVersion = 6
+            };
+            OpenTkControl.Start(settings);
+        }
+        private void OpenTkControl_OnRender(TimeSpan delta)
+        {
+            GL.ClearColor(Color4.Blue);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
     }
 }

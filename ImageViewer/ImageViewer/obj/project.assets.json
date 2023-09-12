@@ -327,6 +327,22 @@
           }
         }
       },
+      "OpenTK.GLWpfControl/4.2.3": {
+        "type": "package",
+        "dependencies": {
+          "OpenTK": "[4.3.0, 5.0.0)"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/GLWpfControl.dll": {
+            "related": ".pdb"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/GLWpfControl.dll": {
+            "related": ".pdb"
+          }
+        }
+      },
       "OpenTK.Graphics/4.8.0": {
         "type": "package",
         "dependencies": {
@@ -1123,6 +1139,19 @@
         "lib/netstandard2.1/OpenTK.Core.xml",
         "opentk.core.4.8.0.nupkg.sha512",
         "opentk.core.nuspec"
+      ]
+    },
+    "OpenTK.GLWpfControl/4.2.3": {
+      "sha512": "VIq15MqeMB42v7cuoPcbHAFzdlOcN5DZEhguuQVdvZP0NlfajjaoVDqtP3koOWLs1how2YqCaVk1qIvsuRdQqQ==",
+      "type": "package",
+      "path": "opentk.glwpfcontrol/4.2.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netcoreapp3.1/GLWpfControl.dll",
+        "lib/netcoreapp3.1/GLWpfControl.pdb",
+        "opentk.glwpfcontrol.4.2.3.nupkg.sha512",
+        "opentk.glwpfcontrol.nuspec"
       ]
     },
     "OpenTK.Graphics/4.8.0": {
@@ -2332,6 +2361,7 @@
       "MaterialDesignThemes >= 4.9.0",
       "OpenCVLibrary >= 1.0.0",
       "OpenTK >= 4.8.0",
+      "OpenTK.GLWpfControl >= 4.2.3",
       "PropertyChanged.Fody >= 4.1.0"
     ]
   },
@@ -2397,6 +2427,10 @@
           "OpenTK": {
             "target": "Package",
             "version": "[4.8.0, )"
+          },
+          "OpenTK.GLWpfControl": {
+            "target": "Package",
+            "version": "[4.2.3, )"
           },
           "PropertyChanged.Fody": {
             "target": "Package",

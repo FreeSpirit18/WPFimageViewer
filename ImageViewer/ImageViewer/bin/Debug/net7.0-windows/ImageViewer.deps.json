@@ -14,6 +14,7 @@
           "MaterialDesignThemes": "4.9.0",
           "OpenCVLibrary": "1.0.0",
           "OpenTK": "4.8.0",
+          "OpenTK.GLWpfControl": "4.2.3",
           "PropertyChanged.Fody": "4.1.0"
         },
         "runtime": {
@@ -277,6 +278,17 @@
           "lib/netstandard2.1/OpenTK.Core.dll": {
             "assemblyVersion": "4.0.0.0",
             "fileVersion": "4.0.0.0"
+          }
+        }
+      },
+      "OpenTK.GLWpfControl/4.2.3": {
+        "dependencies": {
+          "OpenTK": "4.8.0"
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/GLWpfControl.dll": {
+            "assemblyVersion": "4.2.3.0",
+            "fileVersion": "4.2.3.0"
           }
         }
       },
@@ -650,6 +662,13 @@
       "sha512": "sha512-84nID68ATOFM/lbchOn8J439EsRzBN9qyFxYF6/SurbFah3YH6VGT57UG2r8+DMaDh3zkv5t+NCZJGEJsNQMxQ==",
       "path": "opentk.core/4.8.0",
       "hashPath": "opentk.core.4.8.0.nupkg.sha512"
+    },
+    "OpenTK.GLWpfControl/4.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VIq15MqeMB42v7cuoPcbHAFzdlOcN5DZEhguuQVdvZP0NlfajjaoVDqtP3koOWLs1how2YqCaVk1qIvsuRdQqQ==",
+      "path": "opentk.glwpfcontrol/4.2.3",
+      "hashPath": "opentk.glwpfcontrol.4.2.3.nupkg.sha512"
     },
     "OpenTK.Graphics/4.8.0": {
       "type": "package",

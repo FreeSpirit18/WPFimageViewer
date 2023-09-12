@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2uTWWEKiJxw+wcnseR2vmmGhuQk848ZaK5Z25/XogCgeDfcRDmaveI27DayBsnJmGdERw1TA0pGbflpv7q2sbA==",
+  "dgSpecHash": "SSQqT0GFUdRugV4hOqxSW5sVMzVgwBkvb4bqhtxlgP28KAOeU2T30QzOuPFgVvr9grXcNilOEmKgzbIbWcGKgg==",
   "success": true,
   "projectFilePath": "C:\\Users\\admin\\Documents\\GitHub\\WPFimageViewer\\ImageViewer\\ImageViewer\\ImageViewer.csproj",
   "expectedPackageFiles": [
@@ -21,6 +21,7 @@
     "C:\\Users\\admin\\.nuget\\packages\\opentk.audio.openal\\4.8.0\\opentk.audio.openal.4.8.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\opentk.compute\\4.8.0\\opentk.compute.4.8.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\opentk.core\\4.8.0\\opentk.core.4.8.0.nupkg.sha512",
+    "C:\\Users\\admin\\.nuget\\packages\\opentk.glwpfcontrol\\4.2.3\\opentk.glwpfcontrol.4.2.3.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\opentk.graphics\\4.8.0\\opentk.graphics.4.8.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\opentk.input\\4.8.0\\opentk.input.4.8.0.nupkg.sha512",
     "C:\\Users\\admin\\.nuget\\packages\\opentk.mathematics\\4.8.0\\opentk.mathematics.4.8.0.nupkg.sha512",
