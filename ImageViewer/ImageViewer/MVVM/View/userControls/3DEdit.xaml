@@ -15,8 +15,8 @@
             <glWpfControl:GLWpfControl 
                 x:Name="OpenTkControl" 
                 Render="OpenTkControl_OnRender" 
-                Width="300"
-                Height="300"
+                Width="500"
+                Height="500"
                 VerticalAlignment="Center" HorizontalAlignment="Center"
                 
                 />
