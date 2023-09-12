@@ -28,10 +28,7 @@ namespace ImageViewer.MVVM.ViewModel
 
         public void SetUpViewPort()
         {
-            using (this.viewWindow = new GameWindow(GameWindowSettings.Default, new NativeWindowSettings() { Size = (400, 350), Title = "ViewPort" }))
-            {
-
-            }
+            
         }
 
 
