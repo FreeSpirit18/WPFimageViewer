@@ -18,8 +18,8 @@
                 <MenuItem Header="Day" Command="{Binding DayCommand}"/>
             </MenuItem>
             <MenuItem Header="View" FontSize="10" Height="16">
-                <MenuItem Header="Photo" />
-                <MenuItem Header="3D" />
+                <MenuItem Header="Photo" Command="{Binding ChangeToImageCommand}"/>
+                <MenuItem Header="3D" Command="{Binding ChangeTo3DCommand}"/>
             </MenuItem>
         </Menu>
         <Border/>

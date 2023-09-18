@@ -8,13 +8,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" d:Background="AliceBlue">
     <Grid>
-        <Button VerticalAlignment="Top" HorizontalAlignment="Right" Width="50" Height="20" Content="Render" />
-        
+
         <Border BorderBrush="Red" BorderThickness="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-            <!--<Image x:Name="ViewPort" Width="400" Height="350" />-->
+            
             <glWpfControl:GLWpfControl 
                 x:Name="OpenTkControl" 
                 Render="OpenTkControl_OnRender" 
+                Ready="OpenTkControl_Ready"
                 Width="500"
                 Height="500"
                 VerticalAlignment="Center" HorizontalAlignment="Center"

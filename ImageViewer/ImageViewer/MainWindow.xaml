@@ -32,9 +32,10 @@
         
         <userControls:menuBar Grid.Row="0" VerticalAlignment="Top"/>
         <!--<userControls:ImageEdit Grid.Row="1"/>-->
-        <userControls:_3DEdit Grid.Row="1"/>
-
-        <!--<ContentControl Grid.Row="1">
+        <!--<userControls:_3DEdit Grid.Row="1"/>-->
+       
+        
+        <ContentControl Grid.Row="1">
             <ContentControl.Style>
                 <Style TargetType="ContentControl">
                     <Style.Triggers>
@@ -55,7 +56,7 @@
                     </Style.Triggers>
                 </Style>
             </ContentControl.Style>
-        </ContentControl>-->
+        </ContentControl>
 
     </Grid>
 </Window>

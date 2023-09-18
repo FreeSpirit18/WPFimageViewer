@@ -21,7 +21,7 @@ namespace ImageViewer.MVVM.ViewModel
         public MainWindowVM() {
             DisplayImage = new FolderImage("", "");
             Images = new ObservableCollection<FolderImage>();
-            Display = "image";
+            
             thresholdTypes = new ObservableCollection<KeyValuePair<string, int>>()
             {
                 new KeyValuePair<string, int>("Binary", 0),
@@ -32,6 +32,7 @@ namespace ImageViewer.MVVM.ViewModel
             };
             SelectedThreshold = new KeyValuePair<string, int>("Binary", 0);
 
+            Display = "3d";
             ImageActive = false;
             Grayscale = false;
             Mode = "ligth";
@@ -46,12 +47,17 @@ namespace ImageViewer.MVVM.ViewModel
             SaveCommand = new RelayCommand(execute => SaveImage(), canExecute => { return true; });
             NigthCommand = new RelayCommand(execute => ChangeToDark(), canExecute => { return true; });
             DayCommand = new RelayCommand(execute => ChangeToLigth(), canExecute => { return true; });
+
+            ChangeToImageCommand = new RelayCommand(execute => ChangeToImage(), canExecute => { return true; });
+            ChangeTo3DCommand = new RelayCommand(execute => ChangeTo3D(), canExecute => { return true; });
         }
         public RelayCommand SelectCommand { get; private set; }
         public RelayCommand ClearCommand { get; private set; }
         public RelayCommand SaveCommand { get; private set; }
         public RelayCommand NigthCommand { get; private set; }
         public RelayCommand DayCommand { get; private set; }
+        public RelayCommand ChangeToImageCommand { get; private set; }
+        public RelayCommand ChangeTo3DCommand { get; private set; }
 
 
         private string Folder { get; set; }
@@ -334,7 +340,7 @@ namespace ImageViewer.MVVM.ViewModel
             get { return display; }
             set
             {
-                mode = value;
+                display = value;
                 OnPropertyChange("Display");
             }
         }

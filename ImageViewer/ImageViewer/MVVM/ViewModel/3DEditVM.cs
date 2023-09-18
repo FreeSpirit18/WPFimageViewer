@@ -1,4 +1,7 @@
 ﻿using OpenTK.Windowing.Desktop;
+using OpenTK.Wpf;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,26 +14,8 @@ namespace ImageViewer.MVVM.ViewModel
     internal class _3DEditVM : ViewModelBase
     {
         public _3DEditVM() {
-            
+
         }
-
-        private GameWindow viewWindow; 
-
-        public GameWindow ViewWindow
-        {
-            get { return viewWindow; }
-            set { 
-                viewWindow = value;
-                OnPropertyChange("ViewWindow");
-            }
-        }
-
-
-        public void SetUpViewPort()
-        {
-            
-        }
-
 
     }
 }
