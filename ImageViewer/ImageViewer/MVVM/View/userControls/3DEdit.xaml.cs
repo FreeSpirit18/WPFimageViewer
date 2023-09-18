@@ -29,18 +29,25 @@ namespace ImageViewer.MVVM.View.userControls
         }
 
         private int Handle;
+        private Stopwatch _timer;
 
-       
 
         private void OpenTkControl_OnRender(TimeSpan delta)
          {
-             GL.ClearColor(Color4.Blue);
-             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            GL.ClearColor(Color4.Blue);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            
+
+            double timeValue = _timer.Elapsed.TotalSeconds;
+            float greenValue = (float)Math.Sin(timeValue) / 2.0f + 0.5f;
+            int vertexColorLocation = GL.GetUniformLocation(Handle, "OurColor");
+            GL.Uniform4(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
             GL.UseProgram(Handle);
-            
-             float[] vertices = {
+
+            float[] vertices = {
                  0.5f,  0.5f, 0.0f,  // top right
                  0.5f, -0.5f, 0.0f,  // bottom right
                  -0.5f, -0.5f, 0.0f,  // bottom left
@@ -72,11 +79,14 @@ namespace ImageViewer.MVVM.View.userControls
 
         private void OpenTkControl_Ready()
         {
+            _timer=new Stopwatch();
+            _timer.Start();
 
             int vertexShader = GL.CreateShader(ShaderType.VertexShader);
             GL.ShaderSource(vertexShader,
                 @"#version 330 core
                  layout(location = 0) in vec3 aPosition;
+                 
                  void main()
                  {
                      gl_Position = vec4(aPosition, 1.0);
@@ -86,10 +96,13 @@ namespace ImageViewer.MVVM.View.userControls
             int fragmentShader = GL.CreateShader(ShaderType.FragmentShader);
             GL.ShaderSource(fragmentShader,
                 @"#version 330 core
+                
                  out vec4 FragColor;
+                 uniform vec4 OurColor;
+                
                  void main()
                  {
-                     FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+                     FragColor = OurColor;
                  }"
             );
 
